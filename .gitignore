@@ -1,0 +1,32 @@
+# Symfony
+/var/
+/vendor/
+/.env.local
+/.env.*.local
+/.env.test
+/.phpunit.result.cache
+/phpunit.xml
+/build/
+/node_modules/
+/public/bundles/
+/public/build/
+/.idea/
+.DS_Store
+*.log
+*.cache
+
+# React (frontend)
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.env.local
+/frontend/.DS_Store
+
+# OS
+Thumbs.db
+ehthumbs.db
+Icon?
+.DS_Store
+
+# CI/CD
+/.github/
+/.gitlab/
