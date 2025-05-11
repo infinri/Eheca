@@ -15,6 +15,7 @@
 /build/
 coverage/
 composer.phar
+.windsurfrules
 
 # Node / React / Vite
 /node_modules/
