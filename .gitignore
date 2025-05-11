@@ -1,33 +1,54 @@
-# Symfony
+# Symfony / PHP
 /var/
+/var/cache/
+/var/log/
+/var/logs/
+/var/profiler/
 /vendor/
 .env
+.env.*
 /.env.local
 /.env.*.local
 /.env.test
 /.phpunit.result.cache
 /phpunit.xml
 /build/
-/node_modules/
-/public/bundles/
-/public/build/
-/.idea/
-.DS_Store
-*.log
-*.cache
+coverage/
+composer.phar
 
-# React (frontend)
+# Node / React / Vite
+/node_modules/
 /frontend/node_modules/
 /frontend/dist/
 /frontend/.env.local
-/frontend/.DS_Store
+/frontend/.vite/
+/.vite/
+npm-debug.log*
+yarn-error.log
+yarn.lock
+package-lock.json
 
-# OS
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+*.tmp
+*.old
+
+# OS / System
+.DS_Store
+**/.DS_Store
 Thumbs.db
+**/Thumbs.db
 ehthumbs.db
 Icon?
-.DS_Store
 
 # CI/CD
-/.github/
 /.gitlab/
+# (Keep .github/ for workflows)
+
+# General
+*.log
+*.cache
