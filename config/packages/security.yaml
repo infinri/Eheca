@@ -1,0 +1,48 @@
+security:
+    password_hashers:
+        Modules\Core_Auth\Entity\Customer:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: Modules\Core_Auth\Entity\Customer
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/(login|logout|register|account)
+            provider: app_user_provider
+            json_login:
+                check_path: /login
+                username_path: email
+                password_path: password
+            logout:
+                path: /logout
+                invalidate_session: true
+
+        tonalli:
+            pattern: ^/tonalli
+            provider: app_user_provider
+            json_login:
+                check_path: /tonalli/login
+                username_path: email
+                password_path: password
+            logout:
+                path: /tonalli/logout
+                invalidate_session: true
+
+    access_control:
+        # Customer/guest area
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/account, roles: ROLE_CUSTOMER }
+        # Tonalli (admin) area
+        - { path: ^/tonalli/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/tonalli/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/tonalli/dashboard, roles: ROLE_ADMIN }
