@@ -1,0 +1,23 @@
+# Mailer Configuration
+MAILER_DSN=smtp://localhost:1025
+
+# For production, use a real mailer like:
+# MAILER_DSN=smtp://user:password@smtp.example.com:port
+
+# Development mailer (MailHog)
+# MAILER_DSN=smtp://localhost:1025
+
+# Gmail example (not recommended for production)
+# MAILER_DSN=gmail://username:password@default
+
+# SendGrid example
+# MAILER_DSN=sendgrid://KEY@default
+
+# Mailgun example
+# MAILER_DSN=mailgun://KEY@default
+
+# Postmark example
+# MAILER_DSN=postmark://KEY@default
+
+# Amazon SES example
+# MAILER_DSN=ses://ACCESS_KEY:SECRET_KEY@default?region=REGION

@@ -1,0 +1,21 @@
+# Web routes
+app_home:
+    path: /
+    controller: App\Controller\HomeController::index
+    methods: [GET]
+
+# Security routes
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+    methods: [GET, POST]
+
+app_logout:
+    path: /logout
+    methods: [GET]
+
+# Registration routes
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+    methods: [GET, POST]

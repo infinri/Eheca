@@ -1,0 +1,163 @@
+{# Flash Messages Partial #}
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="flash-message-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="toast-header">
+                    {% set icon = 'info-circle' %}
+                    {% set bg_class = 'bg-primary' %}
+                    
+                    {% if type == 'success' %}
+                        {% set icon = 'check-circle' %}
+                        {% set bg_class = 'bg-success' %}
+                    {% elseif type == 'error' or type == 'danger' %}
+                        {% set icon = 'exclamation-triangle' %}
+                        {% set bg_class = 'bg-danger' %}
+                    {% elseif type == 'warning' %}
+                        {% set icon = 'exclamation-circle' %}
+                        {% set bg_class = 'bg-warning' %}
+                    {% endif %}
+                    
+                    <div class="rounded me-2 {{ bg_class }}" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-{{ icon }} text-white" style="font-size: 0.8rem;"></i>
+                    </div>
+                    
+                    <strong class="me-auto text-capitalize">{{ type|replace({'_': ' '}) }}</strong>
+                    <small class="text-muted">{{ 'now'|date('H:i') }}</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ message|raw }}
+                    
+                    {% if type == 'error' and app.session.get('error_details') %}
+                        <button class="btn btn-sm btn-link p-0 mt-2" type="button" data-bs-toggle="collapse" 
+                                data-bs-target="#errorDetails{{ loop.index }}" aria-expanded="false" 
+                                aria-controls="errorDetails{{ loop.index }}">
+                            Show details
+                        </button>
+                        <div class="collapse mt-2" id="errorDetails{{ loop.index }}">
+                            <div class="card card-body small text-muted">
+                                {{ app.session.get('error_details')|nl2br }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<style>
+/* Flash Messages Animation */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.flash-message-container {
+    animation: slideInRight 0.3s ease-out forwards;
+    max-width: 350px;
+}
+
+.flash-message-container.hide {
+    animation: fadeOutRight 0.3s ease-in forwards;
+}
+
+.toast {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.toast:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+.toast-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.75rem 1rem;
+    align-items: center;
+}
+
+.toast-body {
+    padding: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .flash-message-container {
+        max-width: 100%;
+        padding: 1rem;
+    }
+    
+    .toast {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-hide flash messages after delay
+    const flashMessages = document.querySelectorAll('.flash-message-container .toast');
+    
+    flashMessages.forEach(toastEl => {
+        const toast = new bootstrap.Toast(toastEl, {
+            delay: 5000, // 5 seconds
+            autohide: true
+        });
+        
+        // Show the toast
+        toast.show();
+        
+        // Handle close button
+        const closeButton = toastEl.querySelector('.btn-close');
+        if (closeButton) {
+            closeButton.addEventListener('click', function() {
+                const container = toastEl.closest('.flash-message-container');
+                container.style.animation = 'fadeOutRight 0.3s ease-in forwards';
+                setTimeout(() => {
+                    container.remove();
+                }, 300);
+            });
+        }
+    });
+    
+    // Close all flash messages when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.flash-message-container')) {
+            document.querySelectorAll('.flash-message-container .toast').forEach(toastEl => {
+                const toast = bootstrap.Toast.getInstance(toastEl);
+                if (toast) {
+                    const container = toastEl.closest('.flash-message-container');
+                    container.style.animation = 'fadeOutRight 0.3s ease-in forwards';
+                    setTimeout(() => {
+                        container.remove();
+                    }, 300);
+                }
+            });
+        }
+    });
+});
+</script>

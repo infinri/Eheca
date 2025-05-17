@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    <div class="auth-container">
+        <div class="text-center mb-4">
+            <h1 class="h3 mb-3 font-weight-normal">Reset your password</h1>
+            <p class="text-muted">Enter your email address and we'll send you a link to reset your password.</p>
+        </div>
+
+        {{ form_start(requestForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+            <div class="mb-4">
+                {{ form_label(requestForm.email, 'Email address', {'label_attr': {'class': 'form-label'}}) }}
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+                    {{ form_widget(requestForm.email, {
+                        'attr': {
+                            'class': 'form-control form-control-lg ' ~ (requestForm.email.vars.errors|length > 0 ? 'is-invalid' : ''),
+                            'placeholder': 'Enter your email address',
+                            'required': 'required'
+                        }
+                    }) }}
+                </div>
+                <div class="invalid-feedback">
+                    {{ form_errors(requestForm.email) }}
+                </div>
+                <div class="form-text">We'll send you a link to reset your password.</div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary btn-lg" type="submit">
+                    <i class="bi bi-send me-2"></i>Send password reset email
+                </button>
+            </div>
+        {{ form_end(requestForm) }}
+
+        <hr class="my-4">
+
+        <div class="text-center">
+            <p class="mb-0">
+                Remember your password? 
+                <a href="{{ path('app_login') }}" class="text-decoration-none fw-bold">
+                    Back to login
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+    // Form validation
+    (function () {
+        'use strict'
+        
+        const forms = document.querySelectorAll('.needs-validation')
+        
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+    </script>
+{% endblock %}

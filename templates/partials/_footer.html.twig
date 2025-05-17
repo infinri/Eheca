@@ -1,0 +1,260 @@
+<!-- Footer -->
+<footer class="bg-dark text-white pt-5 pb-4">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Company Info -->
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-shield-lock fs-2 text-primary me-2"></i>
+                    <h4 class="mb-0 fw-bold">{{ app_name }}</h4>
+                </div>
+                <p class="text-muted mb-4">
+                    A secure and powerful platform to manage your digital life. Join thousands of users who trust us with their data.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="text-white me-3" aria-label="Twitter">
+                        <i class="bi bi-twitter fs-5"></i>
+                    </a>
+                    <a href="#" class="text-white me-3" aria-label="Facebook">
+                        <i class="bi bi-facebook fs-5"></i>
+                    </a>
+                    <a href="#" class="text-white me-3" aria-label="Instagram">
+                        <i class="bi bi-instagram fs-5"></i>
+                    </a>
+                    <a href="#" class="text-white me-3" aria-label="LinkedIn">
+                        <i class="bi bi-linkedin fs-5"></i>
+                    </a>
+                    <a href="#" class="text-white" aria-label="GitHub">
+                        <i class="bi bi-github fs-5"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                <h5 class="text-uppercase fw-bold mb-4">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="{{ path('app_home') }}" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> About Us
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> Features
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> Pricing
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Resources -->
+            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                <h5 class="text-uppercase fw-bold mb-4">Resources</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="#" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> Documentation
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> Help Center
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> API Reference
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> Community
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-muted text-decoration-none">
+                            <i class="bi bi-chevron-right small me-1"></i> Status
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="col-lg-4 col-md-6">
+                <h5 class="text-uppercase fw-bold mb-4">Contact Us</h5>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-3 d-flex">
+                        <i class="bi bi-geo-alt-fill text-primary me-2 mt-1"></i>
+                        <span>123 Business Street, Suite 100<br>San Francisco, CA 94107</span>
+                    </li>
+                    <li class="mb-3 d-flex">
+                        <i class="bi bi-telephone-fill text-primary me-2 mt-1"></i>
+                        <span>+1 (555) 123-4567</span>
+                    </li>
+                    <li class="mb-3 d-flex">
+                        <i class="bi bi-envelope-fill text-primary me-2 mt-1"></i>
+                        <span>info@example.com</span>
+                    </li>
+                    <li class="mt-4">
+                        <div class="input-group">
+                            <input type="email" class="form-control bg-dark text-white border-secondary" 
+                                   placeholder="Your email" aria-label="Your email">
+                            <button class="btn btn-primary" type="button">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted">Subscribe to our newsletter for updates</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <hr class="my-4 border-secondary">
+        
+        <!-- Copyright & Legal -->
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p class="mb-0 text-muted">&copy; {{ "now"|date("Y") }} {{ app_name }}. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <a href="#" class="text-muted text-decoration-none">Privacy Policy</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <span class="mx-2 text-muted">|</span>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="text-muted text-decoration-none">Terms of Service</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <span class="mx-2 text-muted">|</span>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="text-muted text-decoration-none">Cookie Policy</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Back to Top Button -->
+<button type="button" class="btn btn-primary btn-floating btn-lg rounded-circle" id="btn-back-to-top">
+    <i class="bi bi-arrow-up"></i>
+</button>
+
+<style>
+/* Footer Styles */
+footer a {
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: #ffffff !important;
+    text-decoration: none;
+    transform: translateX(3px);
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: #4f46e5;
+    transform: translateY(-3px);
+}
+
+/* Back to Top Button */
+#btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    width: 50px;
+    height: 50px;
+    z-index: 99;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+#btn-back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .footer-links {
+        margin-top: 30px;
+    }
+    
+    .social-links {
+        margin-top: 20px;
+    }
+}
+</style>
+
+<script>
+// Back to top button
+const backToTopButton = document.getElementById("btn-back-to-top");
+
+// Show/hide the button based on scroll position
+window.onscroll = function() {
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        backToTopButton.style.display = "flex";
+        backToTopButton.style.alignItems = "center";
+        backToTopButton.style.justifyContent = "center";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+};
+
+// Scroll to top when clicked
+backToTopButton.addEventListener("click", function() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+</script>

@@ -1,116 +1,169 @@
 <?php
+
 namespace Modules\Core_Auth\Controller;
 
+use Modules\Core_Auth\Entity\Customer;
+use Modules\Core_Auth\Repository\CustomerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Modules\Core_Auth\Repository\CustomerRepository;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-// use Modules\Core_Auth\Entity\Customer; // If needed for #[CurrentUser] type hint
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-/**
- * AuthController handles customer registration and account endpoints.
- *
- * Routes:
- *   - POST /register: Register a new customer
- *   - GET /account: Get current user info (must be logged in)
- */
 class AuthController extends AbstractController
 {
     /**
-     * Register a new customer user.
-     *
-     * @Route("/register", name="auth_register", methods={"POST"})
+     * Register a new user
+     * 
+     * @Route("/api/register", name="auth_register", methods={"POST"})
      */
-    public function register(Request $request, CustomerRepository $customerRepo, UserPasswordHasherInterface $passwordHasher): JsonResponse
-    {
+    public function register(
+        Request $request, 
+        CustomerRepository $customerRepo,
+        \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $passwordHasher,
+        \Psr\Log\LoggerInterface $logger
+    ): JsonResponse {
+        $logger->info('Registration request received', ['ip' => $request->getClientIp()]);
+        
         try {
-            $data = json_decode($request->getContent(), true);
+            // Get and validate request data
+            $rawContent = $request->getContent();
+            $data = json_decode($rawContent, true);
+            
+            $logger->debug('Raw request content', ['content' => $rawContent]);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $logger->error('Invalid JSON payload', [
+                    'error' => json_last_error_msg(),
+                    'content' => $rawContent
+                ]);
+                return $this->json(
+                    ['error' => 'Invalid JSON payload: ' . json_last_error_msg()], 
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+            
             $email = $data['email'] ?? null;
             $password = $data['password'] ?? null;
+            $firstName = $data['firstName'] ?? null;
+            $lastName = $data['lastName'] ?? null;
 
-            if (!$email || !$password) {
-                return $this->json(['error' => 'Email and password are required.'], Response::HTTP_BAD_REQUEST);
+            // Basic validation
+            if (!$email) {
+                $logger->warning('Email is required');
+                return $this->json(
+                    ['error' => 'Email is required.'], 
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+            
+            if (!$password) {
+                $logger->warning('Password is required', ['email' => $email]);
+                return $this->json(
+                    ['error' => 'Password is required.'], 
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+
+            // Validate email format
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $logger->warning('Invalid email format', ['email' => $email]);
+                return $this->json(
+                    ['error' => 'Invalid email format.'], 
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+            
+            // Validate password strength
+            if (strlen($password) < 8) {
+                $logger->warning('Password too short', ['email' => $email]);
+                return $this->json(
+                    ['error' => 'Password must be at least 8 characters long.'], 
+                    Response::HTTP_BAD_REQUEST
+                );
             }
 
             // Check if user already exists
-            $existing = $customerRepo->findByEmail($email);
-            if ($existing) {
-                return $this->json(['error' => 'Email already registered.'], Response::HTTP_CONFLICT);
+            $logger->debug('Checking if user exists', ['email' => $email]);
+            $existingUser = $customerRepo->findByEmail($email);
+            if ($existingUser) {
+                $logger->warning('Registration attempt with existing email', ['email' => $email]);
+                return $this->json(
+                    ['error' => 'Email already registered.'], 
+                    Response::HTTP_CONFLICT
+                );
             }
 
-            // Hash password (using a dummy Customer object for context)
-            $customerObj = (object)['email' => $email, 'roles' => ['ROLE_CUSTOMER']];
-            $hashedPassword = $passwordHasher->hashPassword($customerObj, $password);
-            $customerRepo->insert([
-                'email' => $email,
-                'password' => $hashedPassword,
-                'roles' => json_encode(['ROLE_CUSTOMER'])
-            ]);
+            // Create and save user using repository
+            $logger->info('Creating new user', ['email' => $email]);
+            
+            try {
+                $user = $customerRepo->createCustomer(
+                    $email,
+                    $password,
+                    $passwordHasher,
+                    $firstName,
+                    $lastName
+                );
+                
+                $logger->info('User created successfully', [
+                    'userId' => $user->getId(),
+                    'email' => $user->getEmail()
+                ]);
 
-            return $this->json(['message' => 'Registration successful.'], Response::HTTP_CREATED);
-        } catch (\Throwable $e) {
-            $logMsg = sprintf(
-                "[%s] Registration error: %s in %s:%d\nStack trace:\n%s\n",
-                date('Y-m-d H:i:s'),
-                $e->getMessage(),
-                $e->getFile(),
-                $e->getLine(),
-                $e->getTraceAsString()
+                return $this->json(
+                    [
+                        'message' => 'User registered successfully',
+                        'userId' => $user->getId(),
+                        'email' => $user->getEmail()
+                    ],
+                    Response::HTTP_CREATED
+                );
+            } catch (\Exception $e) {
+                $logger->error('Error creating user', [
+                    'email' => $email,
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+                throw $e;
+            }
+
+        } catch (\Exception $e) {
+            // Log the error with more context
+            $errorId = uniqid('reg_', true);
+            $logger->critical('Registration error', [
+                'error_id' => $errorId,
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $data ?? []
+            ]);
+            
+            return $this->json(
+                [
+                    'error' => 'An error occurred during registration. Please try again.',
+                    'error_id' => $errorId
+                ], 
+                Response::HTTP_INTERNAL_SERVER_ERROR
             );
-            @file_put_contents(__DIR__ . '/../../../var/log/auth_errors.log', $logMsg, FILE_APPEND);
-            return $this->json([
-                'error' => 'Registration failed. Please contact support.',
-                'details' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * Get current customer account info (must be logged in).
-     *
-     * @Route("/account", name="auth_account", methods={"GET"})
+     * @Route("/api/account", name="auth_account", methods={"GET"})
      */
-    public function account(#[CurrentUser] $customer): JsonResponse
+    public function account(#[CurrentUser] $user = null): JsonResponse
     {
-        try {
-            if (!$customer) {
-                return $this->json(['error' => 'Not authenticated.'], Response::HTTP_UNAUTHORIZED);
-            }
-            // Defensive: handle both array and object
-            $id = $customer['id'] ?? ($customer->getId() ?? null);
-            $email = $customer['email'] ?? ($customer->getEmail() ?? null);
-            $roles = $customer['roles'] ?? ($customer->getRoles() ?? []);
-            if (is_string($roles)) {
-                $roles = json_decode($roles, true);
-            }
-            return $this->json([
-                'id' => $id,
-                'email' => $email,
-                'roles' => $roles,
-            ]);
-        } catch (\Throwable $e) {
-            $logMsg = sprintf(
-                "[%s] Account error: %s in %s:%d\nStack trace:\n%s\n",
-                date('Y-m-d H:i:s'),
-                $e->getMessage(),
-                $e->getFile(),
-                $e->getLine(),
-                $e->getTraceAsString()
-            );
-            @file_put_contents(__DIR__ . '/../../../var/log/auth_errors.log', $logMsg, FILE_APPEND);
-            return $this->json([
-                'error' => 'Account lookup failed. Please contact support.',
-                'details' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        if (!$user) {
+            return $this->json(['error' => 'Not authenticated'], Response::HTTP_UNAUTHORIZED);
         }
+
+        return $this->json([
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
+        ]);
     }
-
-    // To create an admin user, register a customer then update their roles to ["ROLE_ADMIN"] in the DB.
-    // Or add a migration/utility for admin creation if needed.
-
 }

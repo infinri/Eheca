@@ -14,16 +14,37 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        # Web authentication
         main:
-            pattern: ^/(login|logout|register|account)
+            lazy: true
+            provider: app_user_provider
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
+                default_target_path: app_home
+            logout:
+                path: app_logout
+                target: app_login
+
+        # Public API endpoints (no authentication required)
+        api_public:
+            pattern: ^/api/register$
+            stateless: true
+            security: false
+
+        # Secured API endpoints (JWT authentication required)
+        api:
+            pattern: ^/api
+            stateless: true
             provider: app_user_provider
             json_login:
-                check_path: /login
+                check_path: /api/login
                 username_path: email
                 password_path: password
-            logout:
-                path: /logout
-                invalidate_session: true
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            jwt: ~
 
         tonalli:
             pattern: ^/tonalli
@@ -34,15 +55,28 @@ security:
                 password_path: password
             logout:
                 path: /tonalli/logout
+                target: /
                 invalidate_session: true
 
     access_control:
-        # Customer/guest area
-        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/account, roles: ROLE_CUSTOMER }
+        # Web routes
+        - { path: ^/login$, roles: IS_ANONYMOUS }
+        - { path: ^/register, roles: IS_ANONYMOUS }
+        - { path: ^/reset-password, roles: IS_ANONYMOUS }
+        - { path: ^/verify/email, roles: IS_ANONYMOUS }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        
+        # API endpoints
+        - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        
+        # Admin routes (example)
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/account, roles: ROLE_USER }
         # Tonalli (admin) area
         - { path: ^/tonalli/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/tonalli/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/tonalli/dashboard, roles: ROLE_ADMIN }
+        # Public assets
+        - { path: ^/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/build, roles: IS_AUTHENTICATED_ANONYMOUSLY }

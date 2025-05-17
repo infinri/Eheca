@@ -1,0 +1,222 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="auth-container">
+        <h1 class="h3 mb-4 text-center">Create your account</h1>
+
+        
+        {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+            <div class="mb-3">
+                {{ form_label(registrationForm.email, 'Email address', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(registrationForm.email, {
+                    'attr': {
+                        'class': 'form-control form-control-lg ' ~ (registrationForm.email.vars.errors|length > 0 ? 'is-invalid' : ''),
+                        'placeholder': 'Enter your email address',
+                        'required': 'required'
+                    },
+                    'row_attr': {'class': 'form-group'}
+                }) }}
+                <div class="invalid-feedback">
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+                <div class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            
+            <div class="mb-3">
+                {{ form_label(registrationForm.plainPassword.first, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+                <div class="input-group">
+                    {{ form_widget(registrationForm.plainPassword.first, {
+                        'attr': {
+                            'class': 'form-control form-control-lg ' ~ (registrationForm.plainPassword.first.vars.errors|length > 0 ? 'is-invalid' : ''),
+                            'placeholder': 'Create a password',
+                            'required': 'required',
+                            'id': 'passwordInput'
+                        },
+                        'row_attr': {'class': 'form-group'}
+                    }) }}
+                    <button class="btn btn-outline-secondary toggle-password" type="button">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <div class="invalid-feedback">
+                    {{ form_errors(registrationForm.plainPassword.first) }}
+                </div>
+                <div class="form-text">Use 8 or more characters with a mix of letters, numbers & symbols.</div>
+                
+                <div class="password-strength mt-2">
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small class="text-muted password-strength-text">Password strength: <span>Weak</span></small>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(registrationForm.plainPassword.second, 'Confirm Password', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(registrationForm.plainPassword.second, {
+                    'attr': {
+                        'class': 'form-control form-control-lg ' ~ (registrationForm.plainPassword.second.vars.errors|length > 0 ? 'is-invalid' : ''),
+                        'placeholder': 'Confirm your password',
+                        'required': 'required'
+                    },
+                    'row_attr': {'class': 'form-group'}
+                }) }}
+                <div class="invalid-feedback">
+                    {{ form_errors(registrationForm.plainPassword.second) }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(registrationForm.firstName, 'First Name', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(registrationForm.firstName, {
+                    'attr': {
+                        'class': 'form-control form-control-lg ' ~ (registrationForm.firstName.vars.errors|length > 0 ? 'is-invalid' : ''),
+                        'placeholder': 'Enter your first name',
+                        'required': 'required'
+                    },
+                    'row_attr': {'class': 'form-group'}
+                }) }}
+                <div class="invalid-feedback">
+                    {{ form_errors(registrationForm.firstName) }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(registrationForm.lastName, 'Last Name', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(registrationForm.lastName, {
+                    'attr': {
+                        'class': 'form-control form-control-lg ' ~ (registrationForm.lastName.vars.errors|length > 0 ? 'is-invalid' : ''),
+                        'placeholder': 'Enter your last name',
+                        'required': 'required'
+                    },
+                    'row_attr': {'class': 'form-group'}
+                }) }}
+                <div class="invalid-feedback">
+                    {{ form_errors(registrationForm.lastName) }}
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <div class="form-check">
+                    {{ form_widget(registrationForm.agreeTerms, {
+                        'attr': {
+                            'class': 'form-check-input ' ~ (registrationForm.agreeTerms.vars.errors|length > 0 ? 'is-invalid' : ''),
+                            'required': 'required'
+                        }
+                    }) }}
+                    {{ form_label(registrationForm.agreeTerms, 'I agree to the terms and conditions', {
+                        'label_attr': {'class': 'form-check-label'}
+                    }) }}
+                    <div class="invalid-feedback">
+                        You must agree to the terms and conditions.
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-person-plus me-2"></i>Create account
+                </button>
+            </div>
+        {{ form_end(registrationForm) }}
+
+        <hr class="my-4">
+        
+        <div class="text-center">
+            <p class="mb-0">Already have an account? 
+                <a href="{{ path('app_login') }}" class="text-decoration-none fw-bold">
+                    Sign in
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.closest('.input-group').querySelector('input');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    });
+
+    // Password strength indicator
+    const passwordInput = document.getElementById('passwordInput');
+    const progressBar = document.querySelector('.password-strength .progress-bar');
+    const strengthText = document.querySelector('.password-strength-text span');
+    
+    if (passwordInput) {
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            let text = '';
+            
+            // Check password strength
+            if (password.length >= 8) strength += 25;
+            if (password.match(/[a-z]+/)) strength += 25;
+            if (password.match(/[A-Z]+/)) strength += 25;
+            if (password.match(/[0-9]+/)) strength += 15;
+            if (password.match(/[!@#$%^&*(),.?\":{}|<>]+/)) strength += 10;
+            
+            // Update progress bar
+            progressBar.style.width = Math.min(strength, 100) + '%';
+            
+            // Update text and color
+            if (strength < 40) {
+                progressBar.className = 'progress-bar bg-danger';
+                text = 'Weak';
+            } else if (strength < 70) {
+                progressBar.className = 'progress-bar bg-warning';
+                text = 'Fair';
+            } else if (strength < 90) {
+                progressBar.className = 'progress-bar bg-info';
+                text = 'Good';
+            } else {
+                progressBar.className = 'progress-bar bg-success';
+                text = 'Strong';
+            }
+            
+            strengthText.textContent = text;
+        });
+    }
+    
+    // Form validation
+    (function () {
+        'use strict'
+        
+        const forms = document.querySelectorAll('.needs-validation')
+        
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+    </script>
+    
+    <style>
+    .password-strength {
+        margin-top: 0.5rem;
+    }
+    .password-strength .progress {
+        margin-bottom: 0.25rem;
+    }
+    </style>
+{% endblock %}

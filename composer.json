@@ -8,7 +8,17 @@
         "doctrine/dbal": "^3.5",
         "symfony/dotenv": "^7.2",
         "nelmio/cors-bundle": "^2.5",
-        "symfony/security-bundle": "^7.2"
+        "symfony/security-bundle": "^7.2",
+        "lexik/jwt-authentication-bundle": "^3.1",
+        "doctrine/annotations": "^2.0",
+        "symfony/monolog-bundle": "^3.10",
+        "symfony/form": "^7.2",
+        "symfony/validator": "^7.2",
+        "symfony/mailer": "^7.2",
+        "symfony/twig-bundle": "^7.2",
+        "symfony/asset": "^7.2",
+        "twig/extra-bundle": "^3.21",
+        "symfonycasts/reset-password-bundle": "^1.23"
     },
     "autoload": {
         "psr-4": {

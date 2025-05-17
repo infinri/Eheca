@@ -1,0 +1,346 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to {{ app_name }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        {% if app.user %}
+            <!-- Dashboard for logged-in users -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <div class="mb-4">
+                        <div class="avatar-lg mx-auto mb-3">
+                            <div class="avatar-initials">
+                                {{ app.user.firstName|first|upper }}{{ app.user.lastName|first|upper }}
+                            </div>
+                        </div>
+                        <h1 class="h3 mb-3">Welcome back, <span class="text-primary">{{ app.user.firstName }}</span>!</h1>
+                        <p class="lead text-muted">You're logged in as <strong>{{ app.user.email }}</strong></p>
+                    </div>
+                    
+                    <div class="row g-4 justify-content-center">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-lg bg-soft-primary text-primary rounded-circle mb-3 mx-auto">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+                                    <h5 class="card-title mb-2">Profile</h5>
+                                    <p class="card-text text-muted small">View and update your profile information</p>
+                                    <a href="#" class="btn btn-outline-primary btn-sm mt-2">View Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-lg bg-soft-success text-success rounded-circle mb-3 mx-auto">
+                                        <i class="bi bi-shield-lock"></i>
+                                    </div>
+                                    <h5 class="card-title mb-2">Security</h5>
+                                    <p class="card-text text-muted small">Update your password and security settings</p>
+                                    <a href="#" class="btn btn-outline-success btn-sm mt-2">Security Settings</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center p-4">
+                                    <div class="icon-lg bg-soft-info text-info rounded-circle mb-3 mx-auto">
+                                        <i class="bi bi-gear"></i>
+                                    </div>
+                                    <h5 class="card-title mb-2">Settings</h5>
+                                    <p class="card-text text-muted small">Customize your preferences</p>
+                                    <a href="#" class="btn btn-outline-info btn-sm mt-2">Account Settings</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5">
+                        <a href="{{ path('app_logout') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-box-arrow-right me-2"></i>Sign Out
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <!-- Landing page for non-logged-in users -->
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h1 class="display-4 fw-bold mb-4">Welcome to <span class="text-primary">{{ app_name }}</span></h1>
+                    <p class="lead text-muted mb-4">
+                        A secure and powerful platform to manage your digital life. Join thousands of users who trust us with their data.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg px-4">
+                            <i class="bi bi-person-plus me-2"></i>Get Started
+                        </a>
+                        <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                            <i class="bi bi-info-circle me-2"></i>Learn More
+                        </a>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mt-4">
+                        <div class="d-flex">
+                            <div class="avatar-group">
+                                <div class="avatar-sm">
+                                    <div class="avatar-title rounded-circle bg-soft-primary">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="avatar-sm">
+                                    <div class="avatar-title rounded-circle bg-soft-success">
+                                        <i class="bi bi-shield-check text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="avatar-sm">
+                                    <div class="avatar-title rounded-circle bg-soft-info">
+                                        <i class="bi bi-lightning-charge-fill text-info"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <p class="mb-0 small text-muted">Trusted by over <strong>10,000+</strong> users worldwide</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4">
+                                <h5 class="mb-1">Sign in to your account</h5>
+                                <p class="text-muted">Don't have an account? <a href="{{ path('app_register') }}" class="text-decoration-none">Sign up</a></p>
+                            </div>
+                            
+                            <form method="post" action="{{ path('app_login') }}" class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label for="inputEmail" class="form-label">Email address</label>
+                                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control form-control-lg" autocomplete="email" required autofocus>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <label for="inputPassword" class="form-label">Password</label>
+                                        <a href="{{ path('app_forgot_password_request') }}" class="text-decoration-none small">Forgot password?</a>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="password" name="password" id="inputPassword" class="form-control form-control-lg" autocomplete="current-password" required>
+                                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary btn-lg" type="submit">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                                    </button>
+                                </div>
+                                
+                                <div class="divider my-4">
+                                    <span class="px-3 bg-white text-muted">or continue with</span>
+                                </div>
+                                
+                                <div class="row g-2">
+                                    <div class="col">
+                                        <button type="button" class="btn btn-outline-light w-100">
+                                            <i class="bi bi-google me-2"></i> Google
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" class="btn btn-outline-light w-100">
+                                            <i class="bi bi-github me-2"></i> GitHub
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Features Section -->
+            <section id="features" class="py-5 my-5">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="h1">Powerful Features</h2>
+                        <p class="lead text-muted">Everything you need to manage your digital life</p>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="icon-lg bg-soft-primary text-primary rounded-circle mb-3">
+                                        <i class="bi bi-shield-lock"></i>
+                                    </div>
+                                    <h5 class="card-title">Bank-grade Security</h5>
+                                    <p class="card-text text-muted">Your data is encrypted with industry-standard protocols to ensure maximum security.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="icon-lg bg-soft-success text-success rounded-circle mb-3">
+                                        <i class="bi bi-lightning-charge"></i>
+                                    </div>
+                                    <h5 class="card-title">Lightning Fast</h5>
+                                    <p class="card-text text-muted">Experience blazing fast performance with our optimized infrastructure.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="icon-lg bg-soft-info text-info rounded-circle mb-3">
+                                        <i class="bi bi-phone"></i>
+                                    </div>
+                                    <h5 class="card-title">Fully Responsive</h5>
+                                    <p class="card-text text-muted">Works seamlessly on all your devices, from desktop to mobile.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+    </div>
+    
+    <style>
+    .avatar-lg {
+        width: 80px;
+        height: 80px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #4f46e5;
+    }
+    
+    .icon-lg {
+        width: 48px;
+        height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+    }
+    
+    .bg-soft-primary {
+        background-color: rgba(79, 70, 229, 0.1) !important;
+    }
+    
+    .bg-soft-success {
+        background-color: rgba(16, 185, 129, 0.1) !important;
+    }
+    
+    .bg-soft-info {
+        background-color: rgba(59, 130, 246, 0.1) !important;
+    }
+    
+    .divider {
+        position: relative;
+        text-align: center;
+        margin: 20px 0;
+    }
+    
+    .divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: #e2e8f0;
+        z-index: -1;
+    }
+    
+    .avatar-group {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .avatar-sm {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: -8px;
+        border: 2px solid #fff;
+        background-color: #f8f9fa;
+    }
+    
+    .avatar-sm:first-child {
+        margin-left: 0;
+    }
+    
+    .avatar-title {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+    }
+    
+    /* Toggle password visibility */
+    .toggle-password {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    
+    .form-control:focus + .input-group-text .toggle-password {
+        border-color: #4f46e5;
+    }
+    </style>
+    
+    <script>
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.closest('.input-group').querySelector('input');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    });
+    
+    // Form validation
+    (function () {
+        'use strict'
+        
+        const forms = document.querySelectorAll('.needs-validation')
+        
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+    </script>
+{% endblock %}

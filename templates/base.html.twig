@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}A modern web application built with Symfony{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}symfony, php, web, application{% endblock %}">
+    <meta name="author" content="{{ app_name }}">
+    <title>{% block title %}{{ app_name }}{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/fonts/bootstrap-icons.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ app.request.uri }}" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ app.request.uri }}">
+    <meta property="og:title" content="{% block og_title %}{{ app_name }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}A modern web application built with Symfony{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ absolute_url(asset('images/og-image.jpg')) }}{% endblock %}">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ app.request.uri }}">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ app_name }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}A modern web application built with Symfony{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ absolute_url(asset('images/twitter-card.jpg')) }}{% endblock %}">
+    
+    <!-- Web App Capable -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="{{ app_name }}">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #6b7280;
+            --success-color: #10b981;
+            --info-color: #3b82f6;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --light-color: #f9fafb;
+            --dark-color: #111827;
+            --body-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --input-bg: #ffffff;
+            --input-border: #d1d5db;
+            --input-focus: #93c5fd;
+            --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-family-mono: 'Roboto Mono', 'Courier New', monospace;
+            --box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition-base: all 0.2s ease-in-out;
+            --border-radius: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-sm: 0.25rem;
+        }
+        
+        [data-bs-theme="dark"] {
+            --body-bg: #111827;
+            --card-bg: #1f2937;
+            --text-color: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --input-bg: #1f2937;
+            --input-border: #4b5563;
+            --input-focus: #4f46e5;
+            --box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+        
+        body {
+            font-family: var(--font-family-sans);
+            color: var(--text-color);
+            background-color: var(--body-bg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: var(--transition-base);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        main {
+            flex: 1;
+            padding: 2rem 0;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition-base);
+        }
+        
+        .card:hover {
+            box-shadow: var(--box-shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .form-control, .form-select {
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-color);
+            transition: var(--transition-base);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background-color: var(--input-bg);
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+            color: var(--text-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+        
+        /* Auth Containers */
+        .auth-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .flash-messages {
+            max-width: 600px;
+            margin: 0 auto 1.5rem auto;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Focus styles */
+        *:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+        
+        /* Selection styles */
+        ::selection {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Print styles */
+        @media print {
+            .no-print, .no-print * {
+                display: none !important;
+            }
+            
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            
+            .container {
+                width: auto;
+                max-width: 100%;
+                padding: 0;
+            }
+            
+            a[href]::after {
+                content: " (" attr(href) ")";
+                font-size: 0.8em;
+                font-weight: normal;
+                color: var(--text-muted);
+            }
+        }
+    </style>
+    
+    {% block stylesheets %}{% endblock %}
+    
+    {% block head_scripts %}
+        <!-- Preload Critical JS -->
+        <link rel="preload" href="{{ asset('build/runtime.js') }}" as="script">
+        <link rel="preload" href="{{ asset('build/app.js') }}" as="script">
+        
+        <!-- Google Tag Manager -->
+        {% if app.environment == 'prod' %}
+            <script>
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-XXXXXX');
+            </script>
+        {% endif %}
+    {% endblock %}
+</head>
+
+<body>
+    {% if app.environment == 'prod' %}
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXX"
+                   height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    {% endif %}
+    
+    <!-- Skip to main content -->
+    <a href="#main-content" class="visually-hidden-focusable position-absolute top-0 start-0 p-3 bg-primary text-white" style="z-index: 9999; transform: translateY(-100%); transition: transform 0.3s;">
+        Skip to main content
+    </a>
+    
+    <!-- Navigation -->
+    {{ include('partials/_navigation.html.twig') }}
+    
+    <!-- Main Content -->
+    <main id="main-content" class="py-4">
+        <div class="container">
+            <!-- Flash Messages -->
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        {{ message|trans }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'Close'|trans }}"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            
+            <!-- Page Content -->
+            {% block body %}{% endblock %}
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    {{ include('partials/_footer.html.twig') }}
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Theme Toggle Script -->
+    <script>
+        // Function to apply theme with smooth transition
+        function applyTheme(theme, withTransition = true) {
+            if (withTransition) {
+                document.body.classList.add('theme-changing');
+                document.documentElement.classList.add('no-transition');
+            }
+            
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            // Update UI based on theme
+            updateUIForTheme(theme);
+            
+            if (withTransition) {
+                // Re-enable transitions after a short delay
+                setTimeout(() => {
+                    document.body.classList.remove('theme-changing');
+                    document.documentElement.classList.remove('no-transition');
+                }, 300);
+            }
+        }
+        
+        // Check for saved theme preference or use system preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme');
+        
+        // Apply the saved theme, or the system preference if no saved theme
+        if (currentTheme) {
+            applyTheme(currentTheme, false);
+        } else if (prefersDarkScheme.matches) {
+            applyTheme('dark', false);
+        } else {
+            applyTheme('light', false);
+        }
+        
+        // Watch for system theme changes
+        prefersDarkScheme.addEventListener('change', (e) => {
+            // Only apply system theme if user hasn't explicitly set a preference
+            if (!localStorage.getItem('theme')) {
+                applyTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+        
+        // Handle keyboard events for theme toggle
+        function handleThemeKeyDown(event) {
+            // Toggle on Space or Enter key
+            if (event.key === ' ' || event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleTheme(event);
+            }
+            // Focus trap for tab navigation
+            else if (event.key === 'Tab') {
+                const themeButtons = Array.from(document.querySelectorAll('#theme-toggle-btn, .theme-toggle-btn-mobile'));
+                const currentIndex = themeButtons.indexOf(event.target);
+                
+                if (event.shiftKey && currentIndex === 0) {
+                    event.preventDefault();
+                    themeButtons[themeButtons.length - 1].focus();
+                } else if (!event.shiftKey && currentIndex === themeButtons.length - 1) {
+                    event.preventDefault();
+                    themeButtons[0].focus();
+                }
+            }
+        }
+        
+        // Global keyboard shortcut (Alt+T) to toggle theme
+        document.addEventListener('keydown', (event) => {
+            // Check if Alt+T is pressed and not in an input field
+            if (event.altKey && event.key.toLowerCase() === 't' && 
+                !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+                event.preventDefault();
+                const firstThemeButton = document.querySelector('#theme-toggle-btn, .theme-toggle-btn-mobile');
+                if (firstThemeButton) {
+                    firstThemeButton.focus();
+                    toggleTheme(event);
+                }
+            }
+        });
+        
+        // Create ripple effect for theme toggle buttons
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement('span');
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+            
+            // Get the position of the click within the button
+            const rect = button.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            // Set circle styles
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${x - radius}px`;
+            circle.style.top = `${y - radius}px`;
+            circle.classList.add('ripple');
+            
+            // Add ripple to button
+            const ripple = button.getElementsByClassName('ripple')[0];
+            if (ripple) {
+                ripple.remove();
+            }
+            
+            button.appendChild(circle);
+            
+            // Remove the ripple element after the animation completes
+            setTimeout(() => {
+                const ripple = button.getElementsByClassName('ripple')[0];
+                if (ripple) {
+                    ripple.remove();
+                }
+            }, 600);
+        }
+        
+        // Theme toggle function with smooth transitions and accessibility
+        function toggleTheme(event) {
+            // Prevent default if called from an event
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                // Create ripple effect
+                createRipple(event);
+                
+                // Add a class to indicate the button was pressed
+                const button = event.currentTarget;
+                button.classList.add('theme-button-pressed');
+                
+                // Remove the class after the animation completes
+                setTimeout(() => {
+                    button.classList.remove('theme-button-pressed');
+                }, 200);
+            }
+            
+            // Play sound effect for better feedback
+            playThemeToggleSound();
+            
+            // Get current theme and calculate new theme
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Apply the new theme with transition
+            applyTheme(newTheme);
+            
+            // Announce theme change to screen readers
+            const announcement = newTheme === 'dark' ? 'Dark mode enabled' : 'Light mode enabled';
+            const announcementEl = document.createElement('div');
+            announcementEl.setAttribute('aria-live', 'polite');
+            announcementEl.setAttribute('aria-atomic', 'true');
+            announcementEl.className = 'visually-hidden';
+            announcementEl.textContent = announcement;
+            document.body.appendChild(announcementEl);
+            
+            // Remove the announcement after a short delay
+            setTimeout(() => {
+                if (announcementEl.parentNode) {
+                    document.body.removeChild(announcementEl);
+                }
+            }, 1000);
+            
+            // Focus management
+            if (event && event.target) {
+                // Keep focus on the button that was clicked
+                event.target.focus();
+            }
+            
+            // Update UI based on the new theme
+            updateUIForTheme(newTheme);
+            
+            // Dispatch a custom event for other scripts to listen to
+            const themeChangeEvent = new CustomEvent('themeChanged', { 
+                detail: { 
+                    theme: newTheme,
+                    isDark: newTheme === 'dark'
+                } 
+            });
+            document.dispatchEvent(themeChangeEvent);
+        }
+        
+        // Update UI elements based on the current theme
+        function updateUIForTheme(theme) {
+            const isDark = theme === 'dark';
+            const newIconClass = isDark ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+            const newTooltipText = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+            const newAriaPressed = isDark ? 'true' : 'false';
+            const newAriaChecked = isDark ? 'true' : 'false';
+            
+            // Update desktop theme toggle button
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+            if (themeToggleBtn) {
+                const icon = themeToggleBtn.querySelector('i');
+                if (icon) icon.className = newIconClass + ' fs-5';
+                themeToggleBtn.setAttribute('aria-pressed', newAriaPressed);
+                themeToggleBtn.setAttribute('aria-checked', newAriaChecked);
+                themeToggleBtn.setAttribute('data-bs-title', newTooltipText);
+                themeToggleBtn.setAttribute('aria-label', newTooltipText);
+                
+                // Update tooltip if it exists
+                const tooltip = bootstrap.Tooltip.getInstance(themeToggleBtn);
+                if (tooltip) {
+                    tooltip.setContent({ '.tooltip-inner': newTooltipText });
+                }
+                
+                // Update status for screen readers
+                const statusEl = document.getElementById('theme-status');
+                if (statusEl) {
+                    statusEl.textContent = isDark ? 'Dark mode on' : 'Light mode on';
+                }
+            }
+            
+            // Update mobile theme toggle button
+            const mobileThemeToggleBtn = document.querySelector('.theme-toggle-btn-mobile');
+            if (mobileThemeToggleBtn) {
+                const mobileIcon = mobileThemeToggleBtn.querySelector('i');
+                if (mobileIcon) mobileIcon.className = isDark ? 'bi bi-sun-fill me-3' : 'bi bi-moon-fill me-3';
+                mobileThemeToggleBtn.setAttribute('aria-pressed', newAriaPressed);
+                mobileThemeToggleBtn.setAttribute('aria-checked', newAriaChecked);
+                mobileThemeToggleBtn.setAttribute('aria-label', newTooltipText);
+                
+                // Update status for screen readers
+                const mobileStatusEl = document.getElementById('mobile-theme-status');
+                if (mobileStatusEl) {
+                    mobileStatusEl.textContent = isDark ? 'Dark mode on' : 'Light mode on';
+                }
+            }
+            
+            // Update document class for additional theming
+            if (isDark) {
+                document.documentElement.classList.add('theme-dark');
+                document.documentElement.classList.remove('theme-light');
+            } else {
+                document.documentElement.classList.add('theme-light');
+                document.documentElement.classList.remove('theme-dark');
+            }
+        }
+        
+        // Initialize theme on page load with accessibility support
+        function initializeTheme() {
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = prefersDarkScheme.matches;
+            const currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            // Apply the initial theme
+            applyTheme(currentTheme, false);
+            
+            // Handle system theme changes
+            const handleSystemThemeChange = (e) => {
+                // Only update if user hasn't set a preference
+                if (!savedTheme) {
+                    const newTheme = e.matches ? 'dark' : 'light';
+                    applyTheme(newTheme);
+                }
+            };
+            
+            // Add event listener for system theme changes
+            if (prefersDarkScheme.addEventListener) {
+                prefersDarkScheme.addEventListener('change', handleSystemThemeChange);
+            } else if (prefersDarkScheme.addListener) {
+                // For older Safari
+                prefersDarkScheme.addListener(handleSystemThemeChange);
+            }
+            
+            // Return cleanup function
+            return () => {
+                if (prefersDarkScheme.removeEventListener) {
+                    prefersDarkScheme.removeEventListener('change', handleSystemThemeChange);
+                } else if (prefersDarkScheme.removeListener) {
+                    // For older Safari
+                    prefersDarkScheme.removeListener(handleSystemThemeChange);
+                }
+            };
+        }
+        
+        // Add CSS for smooth theme transitions
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Smooth theme transitions */
+            :root {
+                --transition-theme: background-color 0.3s ease, 
+                                  color 0.3s ease, 
+                                  border-color 0.3s ease, 
+                                  box-shadow 0.3s ease,
+                                  opacity 0.3s ease,
+                                  transform 0.3s ease;
+                
+                /* Reduced motion preferences */
+                @media (prefers-reduced-motion: reduce) {
+                    --transition-theme: none;
+                }
+            }
+            
+            /* Apply transitions to theme-affected elements */
+            html {
+                scroll-behavior: smooth;
+                
+                @media (prefers-reduced-motion: reduce) {
+                    scroll-behavior: auto;
+                }
+            }
+            
+            body,
+            .card,
+            .form-control,
+            .form-select,
+            .btn,
+            .dropdown-menu,
+            .modal-content,
+            .list-group-item,
+            .table,
+            .alert,
+            .toast,
+            .nav-tabs .nav-link,
+            .nav-pills .nav-link,
+            .navbar,
+            .footer,
+            .sidebar,
+            .badge,
+            .progress,
+            .tooltip,
+            .popover,
+            .offcanvas,
+            .accordion-button,
+            .form-check-input,
+            .form-range,
+            .form-switch .form-check-input,
+            .input-group-text,
+            .breadcrumb,
+            .pagination,
+            .page-link,
+            .dropdown-item,
+            .list-group-item-action,
+            .btn-close,
+            .form-select,
+            .form-control:focus,
+            .form-select:focus,
+            .form-check-input:focus,
+            .form-control:not(:disabled):not([readonly]):focus,
+            .form-select:not(:disabled):not([readonly]):focus {
+                transition: var(--transition-theme);
+                
+                /* For browsers that don't support prefers-reduced-motion */
+                @media (prefers-reduced-motion: reduce) {
+                    transition: none;
+                }
+            }
+            
+            /* Smooth icon transitions */
+            .theme-icon-transition {
+                transform: scale(0.8);
+                opacity: 0.7;
+                transition: transform 0.2s ease, opacity 0.2s ease;
+                
+                @media (prefers-reduced-motion: reduce) {
+                    transition: none;
+                }
+            }
+            
+            /* Disable transitions during theme toggle to prevent flash */
+            .no-transition,
+            .no-transition *,
+            .no-transition *::before,
+            .no-transition *::after {
+                transition: none !important;
+                animation: none !important;
+                scroll-behavior: auto !important;
+            }
+            
+            /* Focus styles for better accessibility */
+            .theme-toggle-btn:focus-visible,
+            .theme-toggle-btn-mobile:focus-visible {
+                outline: 2px solid var(--primary-color);
+                outline-offset: 2px;
+                box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+            }
+            
+            /* Print styles */
+            @media print {
+                .theme-toggle-btn,
+                .theme-toggle-btn-mobile {
+                    display: none !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Initialize theme when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme and get cleanup function
+            const cleanupThemeListener = initializeTheme();
+            
+            // Add click handlers for theme toggle buttons
+            const themeToggleButtons = document.querySelectorAll('.theme-toggle-btn, .theme-toggle-btn-mobile');
+            
+            // Function to add event listeners to buttons
+            function addButtonListeners() {
+                themeToggleButtons.forEach(button => {
+                    if (button) {
+                        // Store references to the handlers for cleanup
+                        button._themeClickHandler = toggleTheme;
+                        button._touchStartHandler = function() {
+                            this.classList.add('theme-button-pressed');
+                        };
+                        button._touchEndHandler = function() {
+                            this.classList.remove('theme-button-pressed');
+                        };
+                        button._keyDownHandler = function(e) {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                toggleTheme(e);
+                            }
+                        };
+                        
+                        // Add event listeners
+                        button.addEventListener('click', button._themeClickHandler);
+                        button.addEventListener('touchstart', button._touchStartHandler, { passive: true });
+                        button.addEventListener('touchend', button._touchEndHandler, { passive: true });
+                        button.addEventListener('keydown', button._keyDownHandler);
+                    }
+                });
+            }
+            
+            // Add initial event listeners
+            addButtonListeners();
+            
+            // Cleanup function
+            function cleanup() {
+                if (typeof cleanupThemeListener === 'function') {
+                    cleanupThemeListener();
+                }
+                
+                themeToggleButtons.forEach(button => {
+                    if (button) {
+                        if (button._themeClickHandler) {
+                            button.removeEventListener('click', button._themeClickHandler);
+                            delete button._themeClickHandler;
+                        }
+                        if (button._touchStartHandler) {
+                            button.removeEventListener('touchstart', button._touchStartHandler, { passive: true });
+                            delete button._touchStartHandler;
+                        }
+                        if (button._touchEndHandler) {
+                            button.removeEventListener('touchend', button._touchEndHandler, { passive: true });
+                            delete button._touchEndHandler;
+                        }
+                        if (button._keyDownHandler) {
+                            button.removeEventListener('keydown', button._keyDownHandler);
+                            delete button._keyDownHandler;
+                        }
+                    }
+                });
+                
+                window.removeEventListener('beforeunload', cleanup);
+            }
+            
+            // Add cleanup on page unload
+            window.addEventListener('beforeunload', cleanup);
+        });
+        
+        // Play sound effect for theme toggle
+        function playThemeToggleSound() {
+            try {
+                // Check if AudioContext is supported
+                if (window.AudioContext || window.webkitAudioContext) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    const audioCtx = new AudioContext();
+                    
+                    // Create oscillator for a pleasant toggle sound
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.3);
+                }
+            } catch (e) {
+                console.warn('AudioContext error:', e);
+            }
+        }
+            
+            // Initialize popovers
+            const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl);
+            });
+            
+            // Show skip link when tabbed to
+            const skipLink = document.querySelector('.skip-link');
+            if (skipLink) {
+                skipLink.addEventListener('focus', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+                
+                skipLink.addEventListener('blur', function() {
+                    this.style.transform = 'translateY(-100%)';
+                });
+            }
+            
+            // Initialize tooltips for theme toggles
+            const themeToggles = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            themeToggles.forEach(toggle => {
+                new bootstrap.Tooltip(toggle, {
+                    trigger: 'hover',
+                    title: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'Light mode' : 'Dark mode'
+                });
+            });
+        });
+    </script>
+    
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

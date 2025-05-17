@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    <div class="auth-container">
+        <div class="text-center mb-4">
+            <h1 class="h3 mb-3 font-weight-normal">Reset Your Password</h1>
+            <p class="text-muted">Enter your new password below.</p>
+        </div>
+
+        {{ form_start(resetForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+            <div class="mb-3">
+                {{ form_label(resetForm.plainPassword.first, 'New Password', {'label_attr': {'class': 'form-label'}}) }}
+                <div class="input-group">
+                    {{ form_widget(resetForm.plainPassword.first, {
+                        'attr': {
+                            'class': 'form-control form-control-lg ' ~ (resetForm.plainPassword.first.vars.errors|length > 0 ? 'is-invalid' : ''),
+                            'placeholder': 'Enter your new password',
+                            'required': 'required',
+                            'id': 'newPassword',
+                            'autocomplete': 'new-password'
+                        }
+                    }) }}
+                    <button class="btn btn-outline-secondary toggle-password" type="button">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <div class="invalid-feedback">
+                    {{ form_errors(resetForm.plainPassword.first) }}
+                </div>
+                <div class="form-text">Minimum 8 characters with at least one uppercase, one lowercase, one number, and one special character.</div>
+                
+                <div class="password-strength mt-2">
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small class="text-muted password-strength-text">Password strength: <span>Weak</span></small>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                {{ form_label(resetForm.plainPassword.second, 'Confirm New Password', {'label_attr': {'class': 'form-label'}}) }}
+                <div class="input-group">
+                    {{ form_widget(resetForm.plainPassword.second, {
+                        'attr': {
+                            'class': 'form-control form-control-lg ' ~ (resetForm.plainPassword.second.vars.errors|length > 0 ? 'is-invalid' : ''),
+                            'placeholder': 'Confirm your new password',
+                            'required': 'required',
+                            'id': 'confirmPassword',
+                            'autocomplete': 'new-password'
+                        }
+                    }) }}
+                    <button class="btn btn-outline-secondary toggle-password" type="button">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <div class="invalid-feedback">
+                    {{ form_errors(resetForm.plainPassword.second) }}
+                </div>
+                <div id="passwordMatch" class="form-text"></div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg" id="submitButton">
+                    <i class="bi bi-key me-2"></i>Reset Password
+                </button>
+            </div>
+        {{ form_end(resetForm) }}
+    </div>
+
+    <script>
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.closest('.input-group').querySelector('input');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    });
+
+    // Password strength indicator
+    const newPassword = document.getElementById('newPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const passwordMatch = document.getElementById('passwordMatch');
+    const progressBar = document.querySelector('.password-strength .progress-bar');
+    const strengthText = document.querySelector('.password-strength-text span');
+    const submitButton = document.getElementById('submitButton');
+    
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        let text = '';
+        
+        // Check password strength
+        if (password.length >= 8) strength += 20;
+        if (password.match(/[a-z]+/)) strength += 20;
+        if (password.match(/[A-Z]+/)) strength += 20;
+        if (password.match(/[0-9]+/)) strength += 20;
+        if (password.match(/[!@#$%^&*(),.?\":{}|<>]+/)) strength += 20;
+        
+        // Update progress bar
+        progressBar.style.width = Math.min(strength, 100) + '%';
+        
+        // Update text and color
+        if (strength < 40) {
+            progressBar.className = 'progress-bar bg-danger';
+            text = 'Weak';
+            return false;
+        } else if (strength < 70) {
+            progressBar.className = 'progress-bar bg-warning';
+            text = 'Fair';
+            return true;
+        } else if (strength < 90) {
+            progressBar.className = 'progress-bar bg-info';
+            text = 'Good';
+            return true;
+        } else {
+            progressBar.className = 'progress-bar bg-success';
+            text = 'Strong';
+            return true;
+        }
+        
+        strengthText.textContent = text;
+    }
+    
+    function checkPasswordMatch() {
+        if (newPassword.value && confirmPassword.value) {
+            if (newPassword.value === confirmPassword.value) {
+                passwordMatch.textContent = 'Passwords match';
+                passwordMatch.className = 'form-text text-success';
+                return true;
+            } else {
+                passwordMatch.textContent = 'Passwords do not match';
+                passwordMatch.className = 'form-text text-danger';
+                return false;
+            }
+        }
+        return false;
+    }
+    
+    function validateForm() {
+        const isStrongEnough = checkPasswordStrength(newPassword.value);
+        const passwordsMatch = checkPasswordMatch();
+        submitButton.disabled = !(isStrongEnough && passwordsMatch);
+    }
+    
+    newPassword.addEventListener('input', validateForm);
+    confirmPassword.addEventListener('input', validateForm);
+    
+    // Initial validation
+    validateForm();
+    
+    // Form validation
+    (function () {
+        'use strict'
+        
+        const forms = document.querySelectorAll('.needs-validation')
+        
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+    </script>
+    
+    <style>
+    .password-strength {
+        margin-top: 0.5rem;
+    }
+    .password-strength .progress {
+        margin-bottom: 0.25rem;
+    }
+    </style>
+{% endblock %}

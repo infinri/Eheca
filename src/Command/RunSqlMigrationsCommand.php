@@ -2,13 +2,17 @@
 namespace App\Command;
 
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:migrate:sql',
+    description: 'Runs raw SQL migrations from the migrations/ directory, applying each migration only once, with hashing and validation.'
+)]
 class RunSqlMigrationsCommand extends Command
 {
-    protected static $defaultName = 'app:migrate:sql';
     private Connection $conn;
     private string $logFile;
 

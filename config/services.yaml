@@ -4,12 +4,16 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.user_provider.class: Modules\Core_Auth\Security\UserProvider
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Default to false for security reasons
+        bind:
+            $customerRepository: '@Modules\Core_Auth\Repository\CustomerRepository'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -20,5 +24,39 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # Core Auth Module
+    Modules\Core_Auth\:
+        resource: '../modules/Core_Auth/'
+        exclude:
+            - '../modules/Core_Auth/Entity/'
+            - '../modules/Core_Auth/Tests/'
+
+    # Controllers
+    Modules\Core_Auth\Controller\:
+        resource: '../modules/Core_Auth/Controller/'
+        tags: ['controller.service_arguments']
+        public: true
+
+    # Repositories
+    Modules\Core_Auth\Repository\CustomerRepository:
+        class: Modules\Core_Auth\Repository\CustomerRepository
+        arguments:
+            - '@doctrine'
+            - '@logger'
+        public: true
+
+    # Security
+    Modules\Core_Auth\Security\UserProvider:
+        class: Modules\Core_Auth\Security\UserProvider
+        arguments: ['@Modules\Core_Auth\Repository\CustomerRepository']
+        public: true
+        tags: ['security.user_provider']
+
+    # JWT Authentication
+    lexik_jwt_authentication.security.guard.jwt_token_authenticator:
+        class: Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\JWTAuthenticator
+        arguments:
+            - '@lexik_jwt_authentication.jwt_manager'
+            - '@event_dispatcher'
+            - '@lexik_jwt_authentication.extractor.chain_extractor'
+        public: true

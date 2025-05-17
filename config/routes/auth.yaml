@@ -1,0 +1,10 @@
+# Authentication routes
+auth_register:
+    path: /api/register
+    controller: Modules\Core_Auth\Controller\AuthController::register
+    methods: [POST]
+
+auth_account:
+    path: /api/account
+    controller: Modules\Core_Auth\Controller\AuthController::account
+    methods: [GET]
