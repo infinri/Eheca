@@ -1,0 +1,94 @@
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-*
+*.sublime-workspace
+*.sublime-project
+*.sublime-settings
+*.swp
+*~
+*.swo
+*.bak
+*.tmp
+*.old
+
+# OS / System
+.DS_Store
+**/.DS_Store
+Thumbs.db
+**/Thumbs.db
+ehthumbs.db
+Icon?
+.Trash-*
+
+# Dependency directories
+/vendor/
+/node_modules/
+/bower_components/
+/frontend/node_modules/
+/frontend/dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+/frontend/.env.local
+
+# Logs
+*.log
+*.cache
+/storage/logs/
+/var/log/
+/var/logs/
+/var/profiler/
+
+# Cache and generated files
+/var/
+/var/cache/
+/var/page_cache/
+/var/view_preprocessed/
+/var/composer_home/
+/generated/
+
+# Debug files
+*.swp
+*.swo
+*.swn
+
+# Local configuration files
+app/etc/env.php
+app/etc/config.php
+
+# Composer
+composer.lock
+composer.phar
+/composer.json
+/composer.lock
+
+# Node
+package-lock.json
+yarn.lock
+npm-debug.log*
+yarn-error.log
+
+# Testing
+/phpunit.xml
+/phpunit.xml.dist
+/.phpunit.result.cache
+coverage/
+
+# Build directories
+/build/
+/dist/
+/frontend/dist/
+
+# Vite
+/.vite/
+/frontend/.vite/
+
+# CI/CD
+/.gitlab/
+# (Keep .github/ for workflows)
+
+# Custom rules
+.windsurfrules
