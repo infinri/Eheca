@@ -3,30 +3,33 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PHP Version](https://img.shields.io/badge/php-8.2%2B-blue.svg)](https://www.php.net/)
 [![Code Style](https://img.shields.io/badge/code%20style-PSR--12-6c71c4.svg)](https://www.php-fig.org/psr/psr-12/)
+[![Static Analysis](https://github.com/infinri/Eheca/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/infinri/Eheca/actions)
+[![Tests](https://github.com/infinri/Eheca/actions/workflows/tests.yml/badge.svg)](https://github.com/infinri/Eheca/actions)
 
-A high-performance, modular PHP framework designed for building scalable and maintainable web applications with elegance and efficiency.
+A high-performance, modular PHP framework designed for building enterprise-grade web applications with a focus on developer experience and modern PHP practices.
 
 ## ✨ Features
 
 - **Modular Architecture** - Build applications with independent, reusable modules
-- **High Performance** - Optimized for speed with built-in caching and efficient resource management
+- **High Performance** - Optimized with OPcache, JIT compilation, and efficient resource management
 - **Modern PHP** - Built with PHP 8.2+ features and strict typing
-- **PSR Standards** - Follows PSR-4, PSR-11, and PSR-15 standards
-- **Dependency Injection** - Powerful DI container for managing class dependencies
-- **Template Engine** - Built-in template engine with Twig integration
-- **Security** - Built-in protection against common web vulnerabilities
-- **RESTful** - Easy API development with RESTful routing
-- **Database Agnostic** - Supports multiple database systems through Doctrine DBAL
-- **Testing Ready** - Built-in support for PHPUnit and automated testing
+- **PSR Standards** - Follows PSR-4, PSR-7, PSR-11, PSR-12, and PSR-15 standards
+- **Dependency Injection** - Symfony DI container for managing class dependencies
+- **Template Engine** - Twig integration with BEM methodology
+- **API-First** - Built-in OpenAPI/Swagger documentation
+- **Frontend Tooling** - Webpack, SCSS, and RequireJS integration
+- **Security** - JWT authentication, CSRF protection, and input validation
+- **Testing** - PHPUnit, Pest, and Cypress for comprehensive test coverage
 
 ## 🚀 Quick Start
 
 ### Requirements
 
 - PHP 8.2 or higher
-- Composer
-- MySQL 5.7+ / PostgreSQL 10+ / SQLite 3.24+
-- Web server (Nginx/Apache) with PHP-FPM
+- Composer 2.0+
+- Node.js 18+ (for frontend assets)
+- MySQL 8.0+ / MariaDB 10.11+ / PostgreSQL 13+
+- Redis 6.0+ (recommended for caching and sessions)
 
 ### Installation
 
@@ -36,22 +39,39 @@ A high-performance, modular PHP framework designed for building scalable and mai
    cd Eheca
    ```
 
-2. Install dependencies:
+2. Install PHP dependencies:
    ```bash
    composer install
    ```
 
-3. Configure your environment:
+3. Install frontend dependencies:
    ```bash
-   cp .env.example .env
-   php artisan key:generate
+   npm install
    ```
 
-4. Update the `.env` file with your database credentials and other settings.
-
-5. Run the development server:
+4. Configure your environment:
    ```bash
-   php serve
+   cp .env.example .env
+   php bin/console app:generate-key
+   ```
+
+5. Update the `.env` file with your database credentials and other settings.
+
+6. Run database migrations:
+   ```bash
+   php bin/console doctrine:migrations:migrate
+   ```
+
+7. Build frontend assets:
+   ```bash
+   npm run dev
+   # or for production:
+   # npm run build
+   ```
+
+8. Start the development server:
+   ```bash
+   php -S 127.0.0.1:8000 -t public
    ```
 
 Visit `http://localhost:8000` in your browser to see the welcome page.
@@ -60,35 +80,62 @@ Visit `http://localhost:8000` in your browser to see the welcome page.
 
 ```
 Eheca/
-├── app/                  # Application core
-│   ├── Console/          # Console commands
-│   ├── Controllers/      # Application controllers
-│   ├── Middleware/       # HTTP middleware
-│   ├── Models/           # Database models
-│   └── Services/         # Business logic
-├── config/               # Configuration files
-├── public/               # Publicly accessible files
-├── resources/
-│   ├── views/           # Template files
-│   └── assets/           # Frontend assets
-├── routes/               # Route definitions
-├── storage/              # Storage for logs, cache, etc.
-├── tests/                # Test files
-└── vendor/               # Composer dependencies
+├── app/                    # Application code
+│   ├── code/               # Modules (Vendor_Module)
+│   ├── design/             # Themes
+│   └── etc/                # Global configuration
+├── bin/                    # Console commands
+├── config/                 # Environment configurations
+├── docs/                   # Documentation
+├── public/                 # Web root
+├── resources/              # Frontend assets
+├── src/                    # Core framework
+├── tests/                  # Test suites
+├── var/                    # Runtime files
+└── vendor/                 # Composer dependencies
 ```
 
 ## 🧪 Testing
 
-Run the test suite:
-
+Run PHPUnit tests:
 ```bash
 composer test
 ```
 
-For code coverage:
-
+Run static analysis:
 ```bash
-composer test-coverage
+composer analyse
+```
+
+Run frontend tests:
+```bash
+npm test
+```
+
+## 🛠 Development
+
+### Code Style
+
+Check code style:
+```bash
+composer cs-check
+```
+
+Fix code style:
+```bash
+composer cs-fix
+```
+
+### Database
+
+Create migration:
+```bash
+php bin/console doctrine:migrations:diff
+```
+
+Run migrations:
+```bash
+php bin/console doctrine:migrations:migrate
 ```
 
 ## 🤝 Contributing
@@ -99,15 +146,10 @@ We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- Thanks to all contributors who have helped shape this project
-- Inspired by Laravel, Symfony, and other great PHP frameworks
-- Built with ❤️ by [Your Name]
-
 ## 🔗 Connect
 
 - [GitHub](https://github.com/infinri)
+- [Documentation](https://eheca.dev/docs) (Coming Soon)
 
 ---
 

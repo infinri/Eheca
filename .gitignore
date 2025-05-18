@@ -30,9 +30,14 @@ Icon?
 
 # Environment files
 .env
-.env.*
 !.env.example
+.env.local
 /frontend/.env.local
+
+# Configuration files
+!composer.json
+!composer.lock
+!phpunit.xml.dist
 
 # Logs
 *.log
@@ -44,6 +49,9 @@ Icon?
 
 # Cache and generated files
 /var/
+
+# Project configuration that should not be in version control
+.windsurfrules
 /var/cache/
 /var/page_cache/
 /var/view_preprocessed/
@@ -89,6 +97,3 @@ coverage/
 # CI/CD
 /.gitlab/
 # (Keep .github/ for workflows)
-
-# Custom rules
-.windsurfrules
