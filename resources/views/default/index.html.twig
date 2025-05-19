@@ -1,0 +1,33 @@
+{% extends '@Eheca/base/layout.html.twig' %}
+
+{% block title %}Welcome to Eheca Framework{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ message }}</h1>
+        <p>Congratulations! You've successfully set up the Eheca Framework.</p>
+        
+        <div class="features">
+            <h2>Features</h2>
+            <ul>
+                <li>Modern PHP 8.2+</li>
+                <li>Symfony HTTP Kernel</li>
+                <li>Dependency Injection</li>
+                <li>Twig Templating</li>
+                <li>Doctrine DBAL</li>
+                <li>Monolog Logging</li>
+                <li>JWT Authentication</li>
+            </ul>
+        </div>
+        
+        <div class="quick-start">
+            <h2>Quick Start</h2>
+            <ol>
+                <li>Create a new controller in <code>src/Controller</code></li>
+                <li>Add your routes in <code>config/routes.yaml</code></li>
+                <li>Create templates in <code>resources/views</code></li>
+                <li>Run the development server: <code>php -S localhost:8000 -t public</code></li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}

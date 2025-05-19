@@ -1,0 +1,353 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Eheca Project Rules",
+  "version": "2.0.0",
+  "description": "Project-specific rules for Eheca Framework development that extend and complement global and God Tier rules.",
+  
+  "inherits": [
+    "~/.codeium/windsurf/memories/god_rule_tier1.md",
+    "~/.codeium/windsurf/memories/god_rule_tier2.md",
+    "~/.codeium/windsurf/memories/god_rule_tier3.md",
+    "~/.codeium/windsurf/memories/god_rule_tier4.md"
+  ],
+  
+  "project": {
+    "name": "Eheca Framework",
+    "type": "php-framework",
+    "repository": "git@github.com:infinri/Eheca.git",
+    "documentation": "./docs/",
+    "minimum_php": "8.2.0"
+  },
+  
+  "code_style": {
+    "php": {
+      "standard": "PSR-12",
+      "php_version": "8.2+",
+      "strict_types": true,
+      "line_length": 120,
+      "indent_style": "space",
+      "indent_size": 4,
+      "final_classes": true,
+      "declare_strict_types": true,
+      "type_declarations": {
+        "property": true,
+        "return": true,
+        "parameter": true
+      }
+    },
+    "javascript": {
+      "standard": "airbnb",
+      "version": "ES2022",
+      "module_system": "ESM"
+    },
+    "scss": {
+      "style": "scss",
+      "indent_style": "space",
+      "indent_size": 2
+    },
+    "twig": {
+      "indent": 2,
+      "whitespace_trim": "-",
+      "tag_comment": ["{#", "#}"],
+      "tag_block": ["{%", "%}"],
+      "tag_variable": ["{{", "}}"]
+    },
+    "xml": {
+      "indent": 2,
+      "self_closing_elements": true,
+      "quote_style": "double"
+    },
+    "json": {
+      "indent": 2,
+      "quote_style": "double",
+      "trailing_comma": "es5"
+    }
+  },
+  
+  "architecture": {
+    "pattern": "modular",
+    "module_structure": {
+      "required_dirs": ["Controller", "Model", "view", "etc", "view/frontend", "view/adminhtml"],
+      "required_files": ["registration.php", "etc/module.xml", "composer.json"],
+      "naming_convention": "PascalCase"
+    },
+    "layers": ["Presentation", "Service", "Domain", "Infrastructure"],
+    "bounded_contexts": ["Core", "Admin", "Api", "Checkout"],
+    "dependencies": {
+      "core": [
+        "symfony/http-kernel",
+        "symfony/dependency-injection",
+        "doctrine/dbal",
+        "twig/twig",
+        "monolog/monolog"
+      ],
+      "frontend": [
+        "leafo/scssphp",
+        "matthiasmullie/minify",
+        "tedivm/jshrink",
+        "symfony/asset"
+      ],
+      "development": [
+        "phpstan/phpstan",
+        "phpunit/phpunit",
+        "squizlabs/php_codesniffer"
+      ]
+    }
+  },
+  
+  "performance": {
+    "memory_limit": "512M",
+    "max_execution_time": 30,
+    "opcache": {
+      "enabled": true,
+      "jit": true,
+      "preload": true
+    },
+    "database": {
+      "query_timeout": 5,
+      "max_connections": 200,
+      "connection_timeout": 5,
+      "query_cache": true
+    },
+    "caching": {
+      "enabled": true,
+      "default_ttl": 3600,
+      "adapters": ["redis", "filesystem"],
+      "pools": ["default", "page_cache", "eav", "full_page"]
+    },
+    "optimization": {
+      "static_analysis": true,
+      "asset_minification": true,
+      "image_optimization": true
+    }
+  },
+  
+  "security": {
+    "authentication": {
+      "method": "jwt",
+      "token_ttl": 3600,
+      "refresh_token_ttl": 2592000,
+      "password_hashing": "argon2id"
+    },
+    "headers": {
+      "content_security_policy": "default-src 'self'",
+      "strict_transport_security": "max-age=31536000; includeSubDomains",
+      "x_content_type_options": "nosniff",
+      "x_frame_options": "SAMEORIGIN",
+      "x_xss_protection": "1; mode=block",
+      "referrer_policy": "strict-origin-when-cross-origin"
+    },
+    "input_validation": {
+      "enabled": true,
+      "xss_protection": true,
+      "csrf_protection": true,
+      "sql_injection_protection": true,
+      "content_type_options": "nosniff"
+    },
+    "rate_limiting": {
+      "enabled": true,
+      "max_attempts": 100,
+      "decay_minutes": 1
+    }
+  },
+  
+  "testing": {
+    "frameworks": ["phpunit", "pest"],
+    "coverage": {
+      "minimum": 80,
+      "critical": ["Controller", "Model", "Service"],
+      "exclude": ["tests/", "setup/", "generated/", "vendor/"]
+    },
+    "types": ["unit", "integration", "functional", "api", "performance"],
+    "database": {
+      "fixtures": true,
+      "migrations": true,
+      "rollback": true,
+      "transactions": true
+    },
+    "browser": {
+      "framework": "cypress",
+      "headless": true
+    }
+  },
+  
+  "documentation": {
+    "required_sections": ["README.md", "CONTRIBUTING.md", "CHANGELOG.md", "ARCHITECTURE.md"],
+    "api": {
+      "generator": "openapi",
+      "output": "./docs/api",
+      "format": "yaml",
+      "versioning": "semver"
+    },
+    "diagrams": {
+      "types": ["c4", "uml", "sequence", "er"],
+      "format": "svg",
+      "output": "./docs/diagrams",
+      "tools": ["plantuml", "mermaid"]
+    }
+  },
+  
+  "deployment": {
+    "environments": {
+      "development": {
+        "url": "dev.eheca.test",
+        "branch": "develop",
+        "php_version": "8.2"
+      },
+      "staging": {
+        "url": "staging.eheca.app",
+        "branch": "staging",
+        "php_version": "8.2"
+      },
+      "production": {
+        "url": "eheca.app",
+        "branch": "main",
+        "php_version": "8.2"
+      }
+    },
+    "containers": {
+      "enabled": true,
+      "orchestration": "docker-compose",
+      "images": ["php-fpm:8.2", "nginx:alpine", "mariadb:10.11", "redis:alpine", "node:18"]
+    },
+    "ci_cd": {
+      "provider": "github-actions",
+      "stages": ["test", "build", "deploy", "notify"],
+      "notifications": ["slack", "email"],
+      "cache": {
+        "enabled": true,
+        "paths": ["vendor/", "node_modules/", "var/cache/"]
+      }
+    }
+  },
+  
+  "frontend": {
+    "framework": "requirejs",
+    "package_manager": "npm",
+    "build_tool": "webpack",
+    "css": {
+      "preprocessor": "scss",
+      "methodology": "bem",
+      "linter": "stylelint"
+    },
+    "javascript": {
+      "version": "ES2022",
+      "module_system": "amd",
+      "linter": "eslint"
+    },
+    "assets": {
+      "versioning": "content-hash",
+      "compression": ["gzip", "brotli"],
+      "image_optimization": true
+    }
+  },
+  
+  "ai_assistance": {
+    "context": {
+      "include": [
+        "app/code",
+        "app/design",
+        "app/etc",
+        "composer.json",
+        "package.json",
+        "webpack.config.js"
+      ],
+      "exclude": [
+        "var/",
+        "generated/",
+        "node_modules/",
+        "vendor/",
+        "pub/static/"
+      ]
+    },
+    "autofix": {
+      "enabled": true,
+      "level": "suggested",
+      "require_review": true
+    },
+    "suggestions": {
+      "documentation": true,
+      "tests": true,
+      "refactoring": true,
+      "performance": true,
+      "security": true,
+      "accessibility": true
+    }
+  },
+  
+  "compliance": {
+    "licenses": ["MIT"],
+    "vulnerability_scanning": {
+      "enabled": true,
+      "schedule": "weekly",
+      "tools": ["symfony/security-checker", "roave/security-advisories"]
+    },
+    "dependencies": {
+      "allow_alpha": false,
+      "allow_beta": false,
+      "allow_rc": false,
+      "allow_dev": false,
+      "require_lockfile": true,
+      "require_vcs": true
+    }
+  },
+  
+  "maintainers": [
+    {
+      "name": "Infinri",
+      "email": "infinri@example.com",
+      "role": "Lead Developer",
+      "github": "infinri"
+    }
+  ],
+  
+  "extensions": {
+    "vscode": [
+      "bmewburn.vscode-intelephense-client",
+      "mikestead.dotenv",
+      "neilbrayfield.php-docblocker",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "stylelint.vscode-stylelint",
+      "bradlc.vscode-tailwindcss",
+      "mikestead.dotenv"
+    ],
+    "phpstorm": [
+      "PHP Annotations",
+      "PHP Toolbox",
+      "PHPUnit Enhancement",
+      "Symfony Support",
+      "Twig",
+      "Database Tools"
+    ]
+  },
+  
+  "rules": {
+    "enforce_typed_properties": true,
+    "require_constructor_property_promotion": true,
+    "enforce_readonly_properties": true,
+    "require_array_shape": true,
+    "enforce_phpstan_level": 8,
+    "require_phpdoc_for_public_api": true,
+    "enforce_immutable_objects": true,
+    "require_enum_cases": true,
+    "enforce_named_arguments": true,
+    "require_union_type_hints": true,
+    "enforce_strict_types": true,
+    "require_parameter_type_hints": true,
+    "enforce_return_type_hints": true,
+    "require_property_type_hints": true
+  },
+  
+  "overrides": {
+    "global_rules": {
+      "allow_deprecated": false,
+      "allow_inline_php": false,
+      "allow_static_calls": false,
+      "allow_goto": false,
+      "allow_eval": false,
+      "allow_global_variables": false,
+      "allow_superglobals": false
+    }
+  }
+}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1747610365">
+  <project timestamp="1747610365">
+    <package name="Eheca\Controller">
+      <file name="/home/infinri/Initrix/Projects/Eheca/src/Controller/AbstractController.php">
+        <class name="Eheca\Controller\AbstractController" namespace="Eheca\Controller">
+          <metrics complexity="14" methods="8" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="0" elements="31" coveredelements="0"/>
+        </class>
+        <line num="23" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="41" type="method" name="render" visibility="protected" complexity="3" crap="12" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="47" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
+        <line num="50" type="stmt" count="0"/>
+        <line num="53" type="stmt" count="0"/>
+        <line num="55" type="stmt" count="0"/>
+        <line num="66" type="method" name="json" visibility="protected" complexity="1" crap="2" count="0"/>
+        <line num="68" type="stmt" count="0"/>
+        <line num="77" type="method" name="createNotFoundResponse" visibility="protected" complexity="1" crap="2" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="88" type="method" name="get" visibility="protected" complexity="2" crap="6" count="0"/>
+        <line num="90" type="stmt" count="0"/>
+        <line num="91" type="stmt" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="103" type="method" name="getParameter" visibility="protected" complexity="2" crap="6" count="0"/>
+        <line num="105" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
+        <line num="110" type="stmt" count="0"/>
+        <line num="119" type="method" name="hasParameter" visibility="protected" complexity="2" crap="6" count="0"/>
+        <line num="121" type="stmt" count="0"/>
+        <line num="122" type="stmt" count="0"/>
+        <line num="125" type="stmt" count="0"/>
+        <line num="135" type="method" name="log" visibility="protected" complexity="2" crap="6" count="0"/>
+        <line num="137" type="stmt" count="0"/>
+        <line num="138" type="stmt" count="0"/>
+        <metrics loc="142" ncloc="92" classes="1" methods="8" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="0" elements="31" coveredelements="0"/>
+      </file>
+      <file name="/home/infinri/Initrix/Projects/Eheca/src/Controller/DefaultController.php">
+        <class name="Eheca\Controller\DefaultController" namespace="Eheca\Controller">
+          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
+        </class>
+        <line num="19" type="method" name="index" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="21" type="stmt" count="0"/>
+        <line num="23" type="stmt" count="0"/>
+        <line num="24" type="stmt" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <metrics loc="28" ncloc="20" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
+      </file>
+      <file name="/home/infinri/Initrix/Projects/Eheca/src/Controller/HealthController.php">
+        <class name="Eheca\Controller\HealthController" namespace="Eheca\Controller">
+          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+        </class>
+        <line num="20" type="method" name="index" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="22" type="stmt" count="0"/>
+        <line num="23" type="stmt" count="0"/>
+        <line num="24" type="stmt" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <metrics loc="29" ncloc="21" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+      </file>
+    </package>
+    <package name="Eheca">
+      <file name="/home/infinri/Initrix/Projects/Eheca/src/Kernel.php">
+        <class name="Eheca\Kernel" namespace="Eheca">
+          <metrics complexity="3" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="0" elements="15" coveredelements="0"/>
+        </class>
+        <line num="17" type="method" name="registerBundles" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="19" type="stmt" count="0"/>
+        <line num="20" type="stmt" count="0"/>
+        <line num="21" type="stmt" count="0"/>
+        <line num="22" type="stmt" count="0"/>
+        <line num="23" type="stmt" count="0"/>
+        <line num="24" type="stmt" count="0"/>
+        <line num="27" type="method" name="configureContainer" visibility="protected" complexity="1" crap="2" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="31" type="stmt" count="0"/>
+        <line num="32" type="stmt" count="0"/>
+        <line num="33" type="stmt" count="0"/>
+        <line num="36" type="method" name="configureRoutes" visibility="protected" complexity="1" crap="2" count="0"/>
+        <line num="38" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <metrics loc="43" ncloc="43" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="0" elements="15" coveredelements="0"/>
+      </file>
+    </package>
+    <metrics files="4" loc="242" ncloc="176" classes="4" methods="13" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="44" coveredstatements="0" elements="57" coveredelements="0"/>
+  </project>
+</coverage>

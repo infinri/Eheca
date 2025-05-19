@@ -1,0 +1,72 @@
+parameters:
+    # Default locale used for translations
+    locale: 'en'
+    app.dir: '%kernel.project_dir%'
+    container.dumper.inline_factories: true
+    container.dumper.inline_class_loader: true
+    
+    # Maintenance mode parameters
+    maintenance.allowed_ips: []
+    maintenance.message: 'We are performing scheduled maintenance. Please check back soon.'
+
+services:
+    # Default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services
+        autoconfigure: true  # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Makes services private by default
+
+    # Makes classes in src/ available to be used as services
+    Eheca\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # Controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    Eheca\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    # Configure maintenance services
+    Eheca\Controller\MaintenanceController:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $logger: '@monolog.logger'
+            $params: '@parameter_bag'
+    
+    Eheca\Command\MaintenanceCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+        tags: ['console.command']
+
+    # Add your services here
+
+    # Configure Twig
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes: ['bootstrap_5_layout.html.twig']
+
+# Enable attribute configuration
+when@kernel:
+    cache:
+        # Put any cache configuration here if needed
+        pass
+
+# Configure Monolog
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+            channels: ["!event"]
+        console:
+            type: console
+            process_psr_3_messages: false
+            channels: ["!event", "!doctrine", "!console"]

@@ -1,0 +1,8 @@
+# Import routes from controllers
+controllers:
+    resource: ../../src/Controller/
+    type: attribute
+    prefix: /
+    # This can be set to false to disable the route in production
+    # when using a proper web server
+    condition: 'request.isSecure() in [false, true]'

@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /_profiler/
+Disallow: /_error/
+Disallow: /_wdt/
+
+# Production (uncomment when ready)
+# Allow: /
+
+# Development (comment out in production)
+Disallow: /

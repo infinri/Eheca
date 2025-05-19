@@ -1,0 +1,211 @@
+# Main HTTP server
+server {
+    listen 80;
+    listen [::]:80;
+    server_name yourdomain.com www.yourdomain.com;
+    
+    # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response
+    return 301 https://$host$request_uri;
+}
+
+# Main HTTPS server
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    
+    # Server name
+    server_name yourdomain.com www.yourdomain.com;
+    
+    # Document root
+    root /var/www/yourproject/public;
+    
+    # Index files
+    index index.php index.html index.htm;
+    
+    # SSL configuration
+    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/yourdomain.com/chain.pem;
+    
+    # SSL protocols
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256';
+    
+    # SSL session settings
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+    
+    # OCSP Stapling
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout 5s;
+    
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' 'unsafe-eval' *.trusted.com;" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+    
+    # Remove server tokens
+    server_tokens off;
+    
+    # Logging
+    access_log /var/log/nginx/yourdomain-access.log combined buffer=512k flush=1m;
+    error_log /var/log/nginx/yourdomain-error.log warn;
+    
+    # Gzip compression
+    gzip on;
+    gzip_disable "msie6";
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_min_length 256;
+    gzip_types
+        application/atom+xml
+        application/geo+json
+        application/javascript
+        application/x-javascript
+        application/json
+        application/ld+json
+        application/manifest+json
+        application/rdf+xml
+        application/rss+xml
+        application/vnd.ms-fontobject
+        application/wasm
+        application/x-web-app-manifest+json
+        application/xhtml+xml
+        application/xml
+        font/eot
+        font/otf
+        font/ttf
+        image/bmp
+        image/svg+xml
+        text/cache-manifest
+        text/calendar
+        text/css
+        text/javascript
+        text/markdown
+        text/plain
+        text/xml
+        text/vcard
+        text/vnd.rim.location.xloc
+        text/vtt
+        text/x-component
+        text/x-cross-domain-policy;
+    
+    # Root location
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+    
+    # Handle PHP files
+    location ~ ^/index\.php(/|$) {
+        # Connect to PHP-FPM
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        
+        # Set headers
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_param HTTPS on;
+        
+        # Timeouts
+        fastcgi_read_timeout 300;
+        fastcgi_connect_timeout 300;
+        fastcgi_send_timeout 300;
+        
+        # Buffer sizes
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
+        
+        # Don't buffer responses from PHP
+        fastcgi_buffering off;
+        
+        # Internal redirect
+        internal;
+    }
+    
+    # Deny access to .htaccess files
+    location ~ /\.ht {
+        deny all;
+    }
+    
+    # Deny access to dot files
+    location ~ /\\.(?!well-known) {
+        deny all;
+    }
+    
+    # Deny access to sensitive files
+    location ~* \.(yml|yaml|twig|dist|config|log|sql|md|gitignore|gitattributes|env|example)$ {
+        deny all;
+    }
+    
+    # Deny access to vendor and bin directories
+    location ~ ^/(vendor|bin|node_modules)/ {
+        deny all;
+    }
+    
+    # Deny access to PHP files in uploads
+    location ~* /uploads/.*\.php$ {
+        deny all;
+    }
+    
+    # Media: images, icons, video, audio, HTC, 1 year
+    location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public";
+        try_files $uri =404;
+    }
+    
+    # CSS and JavaScript, 1 year
+    location ~* \.(?:css|js)$ {
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public";
+        try_files $uri =404;
+    }
+    
+    # Web fonts, 1 year
+    location ~* \.(?:eot|ttf|woff|woff2)$ {
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public";
+        add_header Access-Control-Allow-Origin *;
+        try_files $uri =404;
+    }
+    
+    # Favicon and robots.txt
+    location = /favicon.ico {
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
+    
+    location = /robots.txt {
+        access_log off;
+        log_not_found off;
+    }
+    
+    # Deny access to hidden files
+    location ~ /\\. {
+        deny all;
+        access_log off;
+        log_not_found off;
+    }
+}
+
+# HTTP/2 Server Push Preload
+# Uncomment and update paths as needed
+# http2_push_preload on;
+# http2_push /assets/css/app.css;
+# http2_push /assets/js/app.js;

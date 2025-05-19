@@ -1,99 +1,254 @@
-# IDE and editor files
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/npm-debug.log
+yarn-error.log
+/public/build/
+###< symfony/webpack-encore-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/phpunit.xml.dist
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> php-cs-fixer ###
+/.php-cs-fixer.cache
+###< php-cs-fixer ###
+
+###> phpstan/phpstan ###
+/phpstan.neon
+/phpstan.neon.dist
+###< phpstan/phpstan ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/phpunit.xml.dist
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> php-cs-fixer ###
+/.php-cs-fixer.cache
+###< php-cs-fixer ###
+
+###> phpstan/phpstan ###
+/phpstan.neon
+/phpstan.neon.dist
+###< phpstan/phpstan ###
+
+# IDE specific files
 .idea/
 .vscode/
-*.sublime-*
-*.sublime-workspace
 *.sublime-project
-*.sublime-settings
-*.swp
-*~
-*.swo
-*.bak
-*.tmp
-*.old
+*.sublime-workspace
 
-# OS / System
-.DS_Store
-**/.DS_Store
-Thumbs.db
-**/Thumbs.db
-ehthumbs.db
-Icon?
-.Trash-*
-
-# Dependency directories
-/vendor/
-/node_modules/
-/bower_components/
-/frontend/node_modules/
-/frontend/dist/
-
-# Environment files
+# Local development environment files
 .env
-!.env.example
-.env.local
-/frontend/.env.local
-
-# Configuration files
-!composer.json
-!composer.lock
-!phpunit.xml.dist
+.env.test
+.phpunit.cache/
 
 # Logs
 *.log
-*.cache
-/storage/logs/
-/var/log/
-/var/logs/
-/var/profiler/
 
-# Cache and generated files
-/var/
+# Local development environment files (Docker)
+docker-compose.override.yml
 
-# Project configuration that should not be in version control
-.windsurfrules
-/var/cache/
-/var/page_cache/
-/var/view_preprocessed/
-/var/composer_home/
-/generated/
-
-# Debug files
-*.swp
-*.swo
-*.swn
-
-# Local configuration files
-app/etc/env.php
-app/etc/config.php
+# Local database files
+*.sqlite
+*.sqlite3
 
 # Composer
-composer.lock
-composer.phar
-/composer.json
 /composer.lock
 
-# Node
-package-lock.json
-yarn.lock
-npm-debug.log*
-yarn-error.log
+# Assets
+/public/bundles/
+/public/build/
 
-# Testing
+# Local environment files (create through "composer require symfony/dotenv")
+/.env
+/.env.*.local
+
+# PHPUnit
 /phpunit.xml
-/phpunit.xml.dist
-/.phpunit.result.cache
-coverage/
 
-# Build directories
-/build/
-/dist/
-/frontend/dist/
+# PHPUnit cache
+.phpunit.result.cache
 
-# Vite
-/.vite/
-/frontend/.vite/
+# PHP CS Fixer cache
+.php-cs-fixer.cache
 
-# CI/CD
-/.gitlab/
-# (Keep .github/ for workflows)
+# PHPStan
+/phpstan.neon
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Local development environment files (Docker)
+docker-compose.override.yml
+
+# Local database files
+*.sqlite
+*.sqlite3
+
+# Composer
+/composer.lock
+
+# Assets
+/public/bundles/
+/public/build/
+
+# Local environment files (create through "composer require symfony/dotenv")
+/.env
+/.env.*.local
+
+# PHPUnit
+/phpunit.xml
+
+# PHPUnit cache
+.phpunit.result.cache
+
+# PHP CS Fixer cache
+.php-cs-fixer.cache
+
+# PHPStan
+/phpstan.neon
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Local development environment files (Docker)
+docker-compose.override.yml
+
+# Local database files
+*.sqlite
+*.sqlite3
+
+# Composer
+/composer.lock
+
+# Assets
+/public/bundles/
+/public/build/
+
+# Local environment files (create through "composer require symfony/dotenv")
+/.env
+/.env.*.local
+
+# PHPUnit
+/phpunit.xml
+
+# PHPUnit cache
+.phpunit.result.cache
+
+# PHP CS Fixer cache
+.php-cs-fixer.cache
+
+# PHPStan
+/phpstan.neon
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Local development environment files (Docker)
+docker-compose.override.yml
+
+# Local database files
+*.sqlite
+*.sqlite3
+
+# Composer
+/composer.lock
+
+# Assets
+/public/bundles/
+/public/build/
+
+# Local environment files (create through "composer require symfony/dotenv")
+/.env
+/.env.*.local
+
+# PHPUnit
+/phpunit.xml
+
+# PHPUnit cache
+.phpunit.result.cache
+
+# PHP CS Fixer cache
+.php-cs-fixer.cache
+
+# PHPStan
+/phpstan.neon
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Local development environment files (Docker)
+docker-compose.override.yml
+
+# Local database files
+*.sqlite
+*.sqlite3
+
+# Composer
+/composer.lock
+
+# Assets
+/public/bundles/
+/public/build/
+
+# Local environment files (create through "composer require symfony/dotenv")
+/.env
+/.env.*.local
+
+# PHPUnit
+/phpunit.xml
+
+# PHPUnit cache
+.phpunit.result.cache
+
+# PHP CS Fixer cache
+.php-cs-fixer.cache
+
+# PHPStan
+/phpstan.neon
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Local development environment files (Docker)
+docker-compose.override.yml
+
+# Local database files
+*.sqlite
+*.sqlite3
+
+# Composer
+/composer.lock
+
+# Assets
+/public/bundles/
+/public/build/

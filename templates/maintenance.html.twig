@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="refresh" content="{{ refresh_after|default(60) }}">
+    <title>Maintenance - {{ status_code }} {{ status_text }}</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --background-color: #f9fafb;
+            --text-color: #1f2937;
+            --error-color: #dc2626;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .container {
+            max-width: 42rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .logo {
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo svg {
+            height: 3rem;
+            width: auto;
+        }
+        
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .status-code {
+            display: inline-block;
+            background-color: #eef2ff;
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            border: 0.25rem solid rgba(79, 70, 229, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .contact {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .contact a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .contact a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- Replace with your logo -->
+            <svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="46" height="46" rx="8" fill="#4f46e5"/>
+                <path d="M23 12L30 20H16L23 12Z" fill="white"/>
+                <path d="M30 34V20H16V34H30Z" fill="#a5b4fc"/>
+                <path d="M16 34L23 26L30 34H16Z" fill="#818cf8"/>
+            </svg>
+        </div>
+        
+        <div class="status-code">Maintenance Mode</div>
+        
+        <div class="spinner"></div>
+        
+        <h1>We'll be back soon!</h1>
+        
+        <p>
+            {{ message|default('We are performing scheduled maintenance. We should be back online shortly.') }}
+        </p>
+        
+        <div class="contact">
+            Need help? <a href="mailto:support@yourdomain.com">Contact support</a>
+        </div>
+    </div>
+</body>
+</html>

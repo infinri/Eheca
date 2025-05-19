@@ -1,0 +1,29 @@
+# Import the framework bundle routes
+framework:
+    resource: '@FrameworkBundle/Resources/config/routing/errors.xml'
+    prefix: /_error
+
+# Import the application routes
+app:
+    resource: '../src/Controller/'
+    type: annotation
+    prefix: /
+
+
+# API routes (versioned)
+api_v1:
+    resource: '../src/Controller/Api/V1/'
+    type: annotation
+    prefix: /api/v1
+
+# Health check endpoint
+health_check:
+    path: /health
+    controller: Eheca\Controller\HealthController::index
+    methods: [GET]
+
+# Default route (homepage)
+homepage:
+    path: /
+    controller: Eheca\Controller\DefaultController::index
+    methods: [GET]

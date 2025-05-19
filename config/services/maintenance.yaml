@@ -1,0 +1,28 @@
+services:
+    # Maintenance Controller
+    App\Controller\MaintenanceController:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $logger: '@monolog.logger.maintenance'
+            $params: '%env(json:MAINTENANCE_PARAMS)%'
+
+    # Maintenance Command
+    App\Command\MaintenanceCommand:
+        arguments:
+            $maintenanceController: '@App\Controller\MaintenanceController'
+            $projectDir: '%kernel.project_dir%'
+        tags: ['console.command']
+
+    # Maintenance Subscriber
+    App\EventSubscriber\MaintenanceSubscriber:
+        arguments:
+            $maintenanceController: '@App\Controller\MaintenanceController'
+            $twig: '@twig'
+            $router: '@router.default'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    # Logger Channel
+    monolog.logger.maintenance:
+        parent: monolog.logger
+        channels: ['maintenance']

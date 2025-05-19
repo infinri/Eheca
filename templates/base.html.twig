@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Eheca Framework - A modern, high-performance PHP framework built with Symfony components">
+    <meta name="keywords" content="PHP, Framework, Symfony, Eheca, Web Development">
+    <meta name="author" content="Eheca Team">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Eheca Framework - Modern PHP Framework">
+    <meta property="og:description" content="A modern, high-performance PHP framework built with Symfony components">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ app.request.uri }}">
+    <meta property="og:image" content="{{ absolute_url(asset('images/og-image.jpg')) }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Eheca Framework - Modern PHP Framework">
+    <meta name="twitter:description" content="A modern, high-performance PHP framework built with Symfony components">
+    <meta name="twitter:image" content="{{ absolute_url(asset('images/og-image.jpg')) }}">
+    
+    <title>{% block title %}Eheca Framework - Modern PHP Framework{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('build/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('build/images/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('build/images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('build/images/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('build/site.webmanifest') }}">
+    
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
+    
+    <!-- Critical CSS -->
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Simple fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+    
+    <!-- Deferred non-critical CSS -->
+    <link rel="preload" href="{{ asset('build/css/app.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ asset('build/css/app.css') }}"></noscript>
+    
+    <!-- Block for page-specific styles -->
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="{{ path('homepage') }}" class="text-2xl font-bold text-primary">
+                    <span class="text-primary">Eheca</span> Framework
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-primary transition-colors">Features</a>
+                    <a href="#documentation" class="text-gray-600 hover:text-primary transition-colors">Documentation</a>
+                    <a href="#examples" class="text-gray-600 hover:text-primary transition-colors">Examples</a>
+                    <a href="#community" class="text-gray-600 hover:text-primary transition-colors">Community</a>
+                </div>
+                <div class="md:hidden">
+                    <!-- Mobile menu button -->
+                    <button class="text-gray-600 hover:text-primary focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block body %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 mt-16">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Eheca</h3>
+                    <p class="text-gray-600">A modern, high-performance PHP framework built with Symfony components.</p>
+                </div>
+                <div>
+                    <h4 class="text-md font-semibold mb-4">Documentation</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Getting Started</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Tutorials</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition-colors">API Reference</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-md font-semibold mb-4">Community</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition-colors">GitHub</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Discord</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Twitter</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-md font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition-colors">License</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; {{ "now"|date("Y") }} Eheca Framework. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+    
+    <!-- Mobile menu script -->
+    <script>
+        // Simple mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('button[aria-label="Toggle menu"]');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    const expanded = this.getAttribute('aria-expanded') === 'true' || false;
+                    this.setAttribute('aria-expanded', !expanded);
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

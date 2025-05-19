@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="/home/infinri/Initrix/Projects/Eheca/phpunit.xml.dist" tests="3" assertions="5" errors="0" failures="0" skipped="0" time="0.003215">
+    <testsuite name="Unit" tests="3" assertions="5" errors="0" failures="0" skipped="0" time="0.003215">
+      <testsuite name="Eheca\Tests\Unit\ExampleTest" file="/home/infinri/Initrix/Projects/Eheca/tests/Unit/ExampleTest.php" tests="3" assertions="5" errors="0" failures="0" skipped="0" time="0.003215">
+        <testcase name="testBasicTest" file="/home/infinri/Initrix/Projects/Eheca/tests/Unit/ExampleTest.php" line="17" class="Eheca\Tests\Unit\ExampleTest" classname="Eheca.Tests.Unit.ExampleTest" assertions="1" time="0.002073"/>
+        <testcase name="testStringConcatenation" file="/home/infinri/Initrix/Projects/Eheca/tests/Unit/ExampleTest.php" line="25" class="Eheca\Tests\Unit\ExampleTest" classname="Eheca.Tests.Unit.ExampleTest" assertions="1" time="0.000376"/>
+        <testcase name="testArrayOperations" file="/home/infinri/Initrix/Projects/Eheca/tests/Unit/ExampleTest.php" line="37" class="Eheca\Tests\Unit\ExampleTest" classname="Eheca.Tests.Unit.ExampleTest" assertions="3" time="0.000766"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
