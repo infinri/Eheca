@@ -40,7 +40,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install -y software-properties-common
 sudo add-apt-repository ppa:ondrej/php -y
 sudo apt update
-sudo apt install -y php8.4 php8.4-{bcmath,ctype,curl,dom,fileinfo,gd,mbstring,pdo_mysql,redis,zip,xml,opcache,intl,simplexml}
+sudo apt install -y php8.4 php8.4-{bcmath,ctype,curl,dom,fileinfo,gd,mbstring,mysql,redis,zip,xml,opcache,intl,simplexml}
 
 # Install Node.js (using nvm recommended)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
