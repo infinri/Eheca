@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # Web Server
+  nginx:
+    image: nginx:alpine
+    container_name: eheca-nginx
+    ports:
+      - "8000:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./docker/nginx/ssl/:/etc/nginx/ssl/
+    depends_on:
+      - php-fpm
+    networks:
+      - eheca-network
+    restart: unless-stopped
+
+  # PHP-FPM Service
+  php-fpm:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: eheca-php-fpm
+    volumes:
+      - ./:/var/www
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    environment:
+      - XDEBUG_MODE=develop,debug
+      - XDEBUG_CONFIG="client_host=host.docker.internal"
+    networks:
+      - eheca-network
+    restart: unless-stopped
+
+  # Database
+  db:
+    image: mariadb:10.11
+    container_name: eheca-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
+    networks:
+      - eheca-network
+    restart: unless-stopped
+
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: eheca-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redisdata:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - eheca-network
+    restart: unless-stopped
+
+  # MailHog
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: eheca-mailhog
+    ports:
+      - "1025:1025" # SMTP server
+      - "8025:8025" # Web UI
+    networks:
+      - eheca-network
+    restart: unless-stopped
+
+networks:
+  eheca-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
+  redisdata:
+    driver: local

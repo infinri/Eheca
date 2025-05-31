@@ -1,0 +1,67 @@
+{
+  "framework": "Symfony 6",
+  "language": "PHP 8.4",
+  "standards": {
+    "coding": "PSR-12",
+    "autoloading": "PSR-4",
+    "structure": "src/ directory",
+    "style": "Symfony and PHP-FIG"
+  },
+  "rules": [
+    {
+      "id": "framework.usage",
+      "title": "Framework & Language",
+      "description": "Use Symfony 6 with PHP 8.4. Adhere strictly to PSR-12 and PSR-4. Use idiomatic PHP: strict types, OOP, type hints, and naming conventions."
+    },
+    {
+      "id": "di.enforcement",
+      "title": "Dependency Injection",
+      "description": "Leverage Symfony's DI container exclusively. Avoid globals/singletons. Inject services via constructors, especially in controllers, to maintain testability and decoupling."
+    },
+    {
+      "id": "modularity.clean_architecture",
+      "title": "Modularity & Clean Architecture",
+      "description": "Structure code by feature (via bundles or namespaces). Enforce SOLID principles. Avoid monoliths. Place logic in service layers, not controllers/views."
+    },
+    {
+      "id": "events.dispatching",
+      "title": "Observer/Event Usage",
+      "description": "Use Symfony EventDispatcher for decoupling. Emit domain events for cross-component actions. Add new behaviors via listeners/subscribers."
+    },
+    {
+      "id": "extensibility.patterns",
+      "title": "Extensibility (Plugins/Overrides)",
+      "description": "Use service decorators, compiler passes, and tagging. Never alter core logic directly. Extend via composition per Symfony best practices."
+    },
+    {
+      "id": "performance.big_o",
+      "title": "Performance & Big-O Awareness",
+      "description": "Enforce optimal algorithm complexity. Avoid N+1s. Use joins, eager loading, and caching. No O(n²) or unbounded logic. Memoize where needed."
+    },
+    {
+      "id": "hallucination.guardrails",
+      "title": "No Hallucination",
+      "description": "Only suggest valid Symfony/PHP APIs. No invented methods/classes. Ground all patterns in existing Symfony docs or project codebase."
+    },
+    {
+      "id": "control.flow",
+      "title": "Controlled Logic Flow",
+      "description": "All logic must have clear flow and exit conditions. Recursion must halt. Queue/event handlers must fail gracefully and never loop infinitely."
+    },
+    {
+      "id": "conventions.structure",
+      "title": "Symfony Conventions",
+      "description": "Respect Symfony's folder structure and naming. Controllers in src/Module/Controller/, templates in templates/, YAML config in config/. Use StudlyCaps, camelCase, and SNAKE_CASE accordingly."
+    },
+    {
+      "id": "testing.quality",
+      "title": "Testing and Quality",
+      "description": "Generate test scaffolds for complex logic. Enforce typed declarations. All public methods/classes must have docblocks for maintainability."
+    },
+    {
+      "id": "composer.prefer_existing",
+      "title": "Composer Reuse",
+      "description": "Prioritize leveraging existing Composer packages and Symfony ecosystem tools before writing custom logic. No unnecessary reinvention."
+    }
+  ]
+}

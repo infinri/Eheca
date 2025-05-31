@@ -1,0 +1,39 @@
+includes:
+    - vendor/phpstan/phpstan/conf/level8.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+
+parameters:
+    level: 8
+    paths:
+        - src
+        - config
+        - public
+        - tests
+
+    # Ignore errors in tests
+    excludePaths:
+        - %currentWorkingDirectory%/tests/_support/_generated/*
+        - %currentWorkingDirectory%/tests/_output/*
+        - %currentWorkingDirectory%/vendor/*
+        - %currentWorkingDirectory%/var/*
+        - %currentWorkingDirectory%/node_modules/*
+
+    # Symfony container
+    symfony:
+        container_xml_path: '%currentWorkingDirectory%/var/cache/dev/App_KernelDevDebugContainer.xml'
+
+    # Ignore unknown classes in tests
+    excludePaths:
+        - %currentWorkingDirectory%/tests/*
+
+    # Ignore specific errors
+    ignoreErrors:
+        - '#Call to an undefined method.*\:\:__\(\)#'
+        - '#Access to an undefined property.*\:\:\$[a-zA-Z0-9_]+#'
+        - '#Method .*\:\:__set_state\(\) should return static\([^)]+\)#'
+        - '#Unsafe usage of new static\(\)#'
+
+    # Check missing typehints
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
