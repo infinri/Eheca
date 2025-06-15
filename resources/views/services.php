@@ -1,29 +1,29 @@
 <?php $this->layout('layouts/app', ['title' => $title, 'active' => $active]) ?>
 <?php $this->start('main') ?>
 
-<section class="max-w-5xl mx-auto px-4 py-12">
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Services</h1>
-        <p class="text-xl text-gray-600">Clear, focused expertise—exactly where you need it</p>
+<section id="services" class="services-section">
+    <div class="services-header">
+        <h1 class="services-heading">Services</h1>
+        <p class="services-subheading">Clear, focused expertise—exactly where you need it</p>
     </div>
 
-    <div class="grid gap-8 md:grid-cols-2">
+    <div class="services-grid">
         <?php foreach ($services as $category => $items): ?>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100">
-            <div class="px-6 py-5 border-b border-gray-100 flex items-center">
-                <h2 class="text-xl font-semibold text-gray-900 flex-1"><?= htmlspecialchars($category) ?></h2>
+        <div class="service-card">
+            <div class="service-card-header">
+                <h2 class="service-card-title"><?= htmlspecialchars($category) ?></h2>
             </div>
-            <ul class="px-6 py-4 space-y-3 list-disc list-inside text-gray-700">
+            <ul class="service-list">
                 <?php foreach ($items as $item): ?>
-                <li><?= htmlspecialchars($item) ?></li>
+                <li class="service-item"><?= htmlspecialchars($item) ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
         <?php endforeach; ?>
     </div>
 
-    <div class="mt-12 text-center">
-        <a href="/contact" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700">Request a Quote</a>
+    <div class="services-cta-wrapper">
+        <a href="/contact" class="btn btn--primary services-cta">Request a Quote</a>
     </div>
 </section>
 <?php $this->stop(); ?>
