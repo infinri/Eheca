@@ -23,7 +23,8 @@ $dotenv->load();
 date_default_timezone_set('UTC');
 
 // Enable error reporting
-error_reporting(E_ALL);
+// Suppress deprecation notices coming from third-party libraries
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 ini_set('display_errors', '1');
 ini_set('log_errors', '1');
 ini_set('error_log', __DIR__ . '/../storage/logs/php_errors.log');
