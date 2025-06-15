@@ -1,0 +1,39 @@
+# -------------------------
+# PHP / Slim 4
+/vendor/
+# Composer cache (optional)
+composer.phar
+
+# Environment & secrets
+.env
+.env.*
+
+# Storage (logs, cache) – keep placeholder .gitignore, ignore contents
+/storage/*
+!/storage/.gitignore
+
+# Logs
+*.log
+*.cache
+
+# Node / Front-end
+/node_modules/
+/public/css/app.css
+/public/js/app.js
+# Optional build dir
+/build/
+
+# IDE / Editor config
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+
+# OS / Misc
+.DS_Store
+Thumbs.db
+
+# PHPUnit / coverage
+coverage/
+.phpunit.result.cache

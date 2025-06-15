@@ -1,0 +1,33 @@
+{
+  "name": "eheca",
+  "version": "1.0.0",
+  "description": "Eheca - Micro Development Tasks",
+  "private": true,
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "npm run development",
+    "development": "NODE_ENV=development npm run build",
+    "watch": "NODE_ENV=development npm run build -- --watch",
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "tailwindcss -i ./resources/css/app.css -o ./public/css/app.css",
+    "build:js": "esbuild ./resources/js/app.js --bundle --outfile=./public/js/app.js --minify",
+    "prod": "npm run production",
+    "production": "NODE_ENV=production npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["eheca", "micro-tasks", "development"],
+  "author": "Eheca Team",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.19.5",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "alpinejs": "^3.13.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5"
+  }
+}
