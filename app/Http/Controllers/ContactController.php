@@ -7,6 +7,7 @@ use League\Plates\Engine;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Support\LoggerFactory;
+use PDO;
 
 /**
  * Handles displaying the contact form and processing submissions.
@@ -18,11 +19,13 @@ class ContactController
 {
     private Engine $view;
     private NotificationService $notifier;
+    private PDO $db;
 
-    public function __construct(Engine $view, NotificationService $notifier)
+    public function __construct(Engine $view, NotificationService $notifier, PDO $db)
     {
         $this->view      = $view;
         $this->notifier  = $notifier;
+        $this->db        = $db;
     }
 
     /**
@@ -170,6 +173,31 @@ class ContactController
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(500);
+        }
+
+        // Persist to DB ---------------------------------------------------
+        try {
+            $stmt = $this->db->prepare(
+                'INSERT INTO contact_submissions (
+                    name, email, phone, company, project_type, contact_method, source, message, created_at
+                ) VALUES (
+                    :name, :email, :phone, :company, :project_type, :contact_method, :source, :message, :created_at
+                )'
+            );
+            $stmt->execute([
+                ':name'           => $data['name'],
+                ':email'          => $data['email'],
+                ':phone'          => $data['phone'] ?? null,
+                ':company'        => $data['company'] ?? null,
+                ':project_type'   => $data['project_type'],
+                ':contact_method' => $data['contact_method'] ?? null,
+                ':source'         => $data['source'] ?? null,
+                ':message'        => $data['message'],
+                ':created_at'     => date('c'),
+            ]);
+        } catch (\Throwable $e) {
+            LoggerFactory::get()->error('DB insertion error: ' . $e->getMessage());
+            // Continue without failing response
         }
 
         // Success ---------------------------------------------------------

@@ -8,6 +8,7 @@ use App\Services\NotificationService;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PageController;
 use App\Support\LoggerFactory;
+use PDO;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -30,6 +31,45 @@ ini_set('error_log', __DIR__ . '/../storage/logs/php_errors.log');
 // Create logs directory if it doesn't exist
 if (!is_dir(__DIR__ . '/../storage/logs')) {
     mkdir(__DIR__ . '/../storage/logs', 0755, true);
+}
+
+// ---------------------------------------------------------------------
+// Database bootstrap (SQLite via PDO)
+// ---------------------------------------------------------------------
+// Resolve DB path from environment or default to storage/database.sqlite
+$dbPath = $_ENV['DB_PATH'] ?? (__DIR__ . '/../storage/database/database.sqlite');
+
+// Ensure directory exists
+$dbDir = dirname($dbPath);
+if (!is_dir($dbDir)) {
+    mkdir($dbDir, 0755, true);
+}
+
+try {
+    $pdo = new PDO('sqlite:' . $dbPath);
+    // Recommended PDO settings
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+    // Create table ONCE – ignored if exists
+    $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS contact_submissions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT,
+            company TEXT,
+            project_type TEXT NOT NULL,
+            contact_method TEXT,
+            source TEXT,
+            message TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        )'
+    );
+} catch (Throwable $e) {
+    // Log fatal error and rethrow
+    LoggerFactory::get()->error('Database initialization failed: ' . $e->getMessage());
+    throw $e;
 }
 
 // Create Container
@@ -148,6 +188,11 @@ $container->set(NotificationService::class, function() {
     return new NotificationService();
 });
 
+// Register PDO (shared instance)
+$container->set(PDO::class, function() use ($pdo) {
+    return $pdo;
+});
+
 // Register PageController with dependency injection
 $container->set(PageController::class, function($c) {
     return new PageController(
@@ -159,7 +204,8 @@ $container->set(PageController::class, function($c) {
 $container->set(ContactController::class, function($c) {
     return new ContactController(
         $c->get('view'),
-        $c->get(NotificationService::class)
+        $c->get(NotificationService::class),
+        $c->get(PDO::class)
     );
 });
 
