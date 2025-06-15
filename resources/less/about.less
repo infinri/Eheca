@@ -1,0 +1,104 @@
+// About page styles
+@import "variables.less";
+
+.about-section {
+  max-width: 64rem; // 1024px
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.about-heading {
+  font-size: 2.25rem; // 36px
+  font-weight: 700;
+  color: @gray-900;
+  margin-bottom: 1rem;
+}
+
+.about-subheading {
+  font-size: 1.25rem; // 20px
+  color: @gray-600;
+}
+
+.about-card {
+  background: @white;
+  .shadow-lg();
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.about-wrapper {
+  padding: 2rem;
+  @media (min-width: 768px) {
+    padding: 3rem;
+  }
+}
+
+.about-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.about-avatar {
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+
+.about-avatar-initial {
+  width: 10rem; // 160px
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 700;
+  color: @indigo-600;
+  background: linear-gradient(135deg, lighten(@indigo-500, 35%), lighten(@indigo-500, 5%));
+  border-radius: 50%;
+}
+
+.about-content {
+  flex: 1;
+}
+
+.about-paragraph {
+  font-size: 1.125rem; // 18px
+  color: @gray-700;
+  margin-bottom: 1.5rem;
+}
+
+.about-core-heading {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: @gray-900;
+  margin-bottom: 0.75rem;
+}
+
+.about-core-list {
+  list-style: disc inside;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.about-core-item {
+  color: @gray-700;
+}
+
+.about-cta-wrapper {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.about-cta {
+  min-width: 12rem;
+}
