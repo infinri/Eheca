@@ -6,7 +6,6 @@ composer.phar
 
 # Environment & secrets
 .env
-.env.*
 
 # Storage (logs, cache) – keep placeholder .gitignore, ignore contents
 /storage/*
