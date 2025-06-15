@@ -1,55 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $this->e($title ?? 'Eheca') ?></title>
-    <link href="/css/app.css" rel="stylesheet">
-    <script src="/js/app.js" defer></script>
-</head>
-<body class="bg-gray-100">
-    <div class="min-h-screen">
-        <nav class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <div class="flex-shrink-0 flex items-center">
-                        <span class="text-xl font-bold text-gray-800">Eheca</span>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title><?= $this->e($title ?? 'Eheca') ?></title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+        <link href="/css/app.css" rel="stylesheet">
+        <script src="/js/app.js" defer></script>
+    </head>
+    <body class="site-body">
+        <nav class="navbar" x-data="{ open: false }">
+            <div class="navbar-container">
+                <div class="navbar-inner">
+                    <button class="menu-toggle" @click="open = !open" aria-label="Toggle menu">
+                        <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <div class="logo-wrapper">
+                        <span class="logo">Eheca</span>
                     </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="/" class="<?= ($active ?? '') === 'home' ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <div :class="{'navbar-links': true, 'navbar-links--open': open}" class="navbar-links">
+                        <a href="/" class="nav-link <?= ($active ?? '') === 'home' ? 'nav-link--active' : '' ?>">
                             Home
                         </a>
-                        <a href="/about" class="<?= ($active ?? '') === 'about' ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="/about" class="nav-link <?= ($active ?? '') === 'about' ? 'nav-link--active' : '' ?>">
                             About
                         </a>
-                        <a href="/services" class="<?= ($active ?? '') === 'services' ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="/services" class="nav-link <?= ($active ?? '') === 'services' ? 'nav-link--active' : '' ?>">
                             Services
                         </a>
-                        <a href="/examples" class="<?= ($active ?? '') === 'examples' ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="/examples" class="nav-link <?= ($active ?? '') === 'examples' ? 'nav-link--active' : '' ?>">
                             Examples
                         </a>
-                        <a href="/faq" class="<?= ($active ?? '') === 'faq' ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="/faq" class="nav-link <?= ($active ?? '') === 'faq' ? 'nav-link--active' : '' ?>">
                             FAQ
                         </a>
-                        <a href="/contact" class="<?= ($active ?? '') === 'contact' ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="/contact" class="nav-link <?= ($active ?? '') === 'contact' ? 'nav-link--active' : '' ?>">
                             Contact
                         </a>
                     </div>
                 </div>
             </div>
         </nav>
-
-        <main class="py-10">
-            <?= $this->section('main') ?: '' ?>
-        </main>
-
-        <footer class="bg-white border-t border-gray-200 mt-auto">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-gray-500 text-sm">
-                    &copy; <?= date('Y') ?> Eheca. All rights reserved.
-                </p>
+        <div class="site-wrapper">
+            <main class="site-main">
+                <?= $this->section('main') ?: '' ?>
+            </main>
+        </div>
+        <footer class="site-footer">
+            <div class="footer-container">
+                <p>&copy; <?= date('Y') ?> Eheca. All rights reserved.</p>
+                <nav class="footer-links">
+                    <a href="/privacy" class="footer-link">Privacy</a>
+                    <a href="/terms" class="footer-link">Terms</a>
+                    <a href="/contact" class="footer-link">Contact</a>
+                </nav>
             </div>
         </footer>
-    </div>
-</body>
+    </body>
 </html>
