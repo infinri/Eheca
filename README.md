@@ -1,7 +1,7 @@
 # Eheca
 
 Eheca is a small-footprint web application skeleton for rapid micro-development tasks and portfolio sites.  
-Built with **Slim 4** and **Blade** templating, it ships with modern styling via **Tailwind CSS** and interactivity from **Alpine.js**.  
+Built with **Slim 4** and **Blade** templating, it ships with modular styles written in **Less** and interactivity from **Alpine.js**.  
 Out of the box you get a contact form wired to Brevo for email delivery (SMS optional), sensible middleware, and a clean structure for adding new pages and APIs.
 
 ---
@@ -10,13 +10,13 @@ Out of the box you get a contact form wired to Brevo for email delivery (SMS opt
 
 * **Slim 4** micro-framework — fast, PSR-7/15 compliant routing & middleware
 * **Blade** as the view engine for expressive, reusable templates
-* **Tailwind CSS 3** & **Alpine.js 3** for responsive, minimal-JS UI
+* **Less** (custom utility classes) & **Alpine.js 3** for responsive, minimal-JS UI
 * Contact form with **Brevo** (Sendinblue) email notifications and optional SMS hook
 * CSRF protection & simple IP-based rate-limiting middleware
 * Pre-built pages: Home, Services, Examples, FAQ, Contact
 * `/favicon.ico` helper route to keep logs clean
 * `/api/status` JSON health-check endpoint for monitoring
-* NPM/Tailwind & esbuild pipeline for instant asset builds
+* NPM/Less & esbuild pipeline for instant asset builds
 * Ready for Docker / CI-CD (GitHub Actions sample forthcoming)
 
 ---
@@ -26,7 +26,7 @@ Out of the box you get a contact form wired to Brevo for email delivery (SMS opt
 ```
 ├── app/                  # PHP domain logic (Controllers, Middleware, Services)
 ├── public/               # Web root (index.php, compiled assets)
-├── resources/            # Blade views, Tailwind CSS, Alpine JS
+├── resources/            # Blade views, Less styles, Alpine JS
 ├── routes/               # Route definitions (web.php)
 ├── storage/              # Logs, cache (kept out of Git)
 ├── vendor/               # Composer dependencies (ignored)
