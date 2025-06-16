@@ -20,6 +20,7 @@
         "ext-pdo_sqlite": "*"
     },
     "require-dev": {
+        "phpstan/phpstan": "^1.12",
         "phpunit/phpunit": "^10.0",
         "squizlabs/php_codesniffer": "^3.7"
     },
@@ -45,6 +46,7 @@
         ],
         "watch": "npm run watch",
         "test": "phpunit",
+        "analyse": "vendor/bin/phpstan analyse",
         "lint": [
             "phpcs --standard=PSR12 app public/index.php",
             "npx stylelint 'resources/**/*.css'"

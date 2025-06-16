@@ -12,8 +12,9 @@
     "development": "NODE_ENV=development npm run build",
     "watch": "NODE_ENV=development npm run build -- --watch",
     "build": "npm run build:css && npm run build:js",
-    "build:css": "lessc ./resources/less/app.less ./public/css/app.css",
+    "build:css": "lessc ./resources/less/app.less ./public/css/app.css && npm run css:purge && mv public/css/app.purged.css public/css/app.css",
     "build:js": "esbuild ./resources/js/app.js --bundle --outfile=./public/js/app.js --minify",
+    "css:purge": "postcss public/css/app.css -o public/css/app.purged.css",
     "prod": "npm run production",
     "production": "NODE_ENV=production npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,6 +23,9 @@
   "author": "Eheca Team",
   "license": "MIT",
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^6.0.0",
+    "postcss": "^8.4.38",
+    "postcss-cli": "^10.1.0",
     "esbuild": "^0.19.5",
     "less": "^4.2.0",
     "alpinejs": "^3.13.0"

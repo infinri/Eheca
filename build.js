@@ -11,16 +11,6 @@ publicDirs.forEach(dir => {
     }
 });
 
-// Process CSS with Tailwind
-console.log('Processing CSS with Tailwind...');
-try {
-    execSync('npx tailwindcss -i ./resources/css/app.css -o ./public/css/app.css --minify', { stdio: 'inherit' });
-    console.log('✓ CSS processed successfully');
-} catch (error) {
-    console.error('Error processing CSS with Tailwind:', error);
-    process.exit(1);
-}
-
 // Copy JavaScript
 console.log('Copying JavaScript files...');
 try {
